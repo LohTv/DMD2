@@ -1,0 +1,551 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Godot Day 2 — Your Day 1 Project</title><style>
+:root{color-scheme:light}*{box-sizing:border-box}body{margin:0;background:#edf1ef;color:#213c43;font:17px/1.65 system-ui,Segoe UI,Arial,sans-serif}html{scroll-behavior:smooth}a{color:#17645e;text-underline-offset:3px}nav{position:fixed;inset:0 auto 0 0;width:260px;padding:24px 22px;overflow:auto;background:#203a3e;color:white}nav strong{display:block;font-size:22px;margin-bottom:18px}nav a{display:block;color:#def0ea;font-size:14px;line-height:1.4;text-decoration:none;padding:9px 0;border-bottom:1px solid #ffffff22}main{margin-left:260px;padding:32px 44px 70px;max-width:1260px}section{background:white;padding:35px 38px;margin-bottom:24px;border:1px solid #dde6e2;border-radius:6px;scroll-margin-top:20px}h1{font-size:42px;line-height:1.15;margin:16px 0 24px}h2{font-size:28px;line-height:1.25;margin:0 0 24px}h3{font-size:21px;margin-top:32px}.lead{font-size:22px;line-height:1.5}.eyebrow{font-size:12px;font-weight:bold;letter-spacing:.12em;color:#56766d}p{margin:16px 0}li{margin:10px 0}.memory,.check,.notice,blockquote{padding:18px 22px;background:#edf5f0;border-left:4px solid #2a7b6d;margin:24px 0}.memory{font-size:20px}.notice{background:#fff8e9;border-color:#c69739;font-size:15px}blockquote{font-size:18px}table{border-collapse:collapse;width:100%;font-size:14px;margin:24px 0}td,th{padding:10px 12px;border:1px solid #d6e2dd;vertical-align:top}th{text-align:left;background:#eaf3ee}code{font-family:Consolas,Courier New,monospace}p code,li code,td code{font-size:.9em;background:#edf4ef;padding:1px 3px}pre{background:#f0f5f2;border:1px solid #d9e5de;padding:19px;overflow:auto;tab-size:4;font:13px/1.65 Consolas,Courier New,monospace;white-space:pre}.code-location{padding-top:12px;border-top:1px solid #d9e4df;margin-top:30px;font-size:15px}.comparison{display:grid;grid-template-columns:1fr 1fr;gap:16px}figure{margin:20px 0}img{width:100%;height:auto;border:1px solid #dde5e1}figcaption{font-size:13px;line-height:1.45;color:#4d6d63;margin-top:10px}details{border:1px solid #cbdcd4;padding:16px;margin:20px 0}summary{cursor:pointer;font-weight:bold}.print{margin-top:22px;background:#e2f0e8;color:#163d36;border:0;border-radius:4px;padding:11px 18px;cursor:pointer;font-weight:bold}@media(max-width:1020px){nav{position:relative;width:auto;max-height:280px}main{margin:0;padding:20px}section{padding:24px}h1{font-size:34px}table{display:block;overflow:auto}}@media(max-width:600px){.comparison{grid-template-columns:1fr}}@media print{@page{size:A4;margin:15mm}nav{display:none}body{font-size:10.5pt;line-height:1.45;background:white}main{margin:0;padding:0;max-width:none}section{border:0;padding:0;margin:0 0 24px}h1{font-size:25pt}h2{font-size:18pt;break-after:avoid}h3{font-size:13pt;break-after:avoid}pre{white-space:pre-wrap;overflow-wrap:anywhere;overflow:visible;font-size:8pt;line-height:1.4}table{display:table;font-size:9pt}tr,figure{break-inside:avoid}.memory{font-size:12pt}blockquote{font-size:11pt}.notice{font-size:10pt}a{color:inherit}.comparison{grid-template-columns:1fr 1fr}details:not([open]){display:none}}
+</style></head><body><nav><strong>Day 2 · Your project</strong><a href="#start">Your current project</a><a href="#plan">The five-hour schedule</a><a href="#how">How to use the code blocks without creating new errors</a><a href="#baseline">0:00–0:20 · Repair the existing version first</a><a href="#hover">0:20–0:40 · Add hover without changing selection</a><a href="#paths">0:40–1:35 · Trace paths over the existing roads</a><a href="#ui">1:35–2:20 · Bring the interface closer to the studies</a><a href="#sprites">2:20–2:55 · Add the vehicle icon and its frames</a><a href="#pause">2:55–3:20 · Add Pause and Restart</a><a href="#instructions">3:20–3:55 · Add a short instructions screen</a><a href="#balance">3:55–4:20 · Make both travel choices viable</a><a href="#verify">4:20–5:00 · Final checks and saving</a><a href="#quick">Short checklist for the session</a><a href="#references">References and scope</a><button class="print" onclick="window.print()">Print this guide</button></nav><main><section id="start"><p class="eyebrow">GODOT 4.4 · YOUR DAY 1 PROJECT · FIVE-HOUR SESSION</p>
+<h1>Day 2: finish your working game</h1>
+<p class="lead">Build on the version you have already made. Fix the interaction and route movement, then add the interface, vehicles and opening instructions.</p>
+<p>This guide was checked against your supplied folder <code>full-nam-c-2-final-outcome-2026-10</code>. Your actual controller is <code>checkpoint_map.gd</code>, your data function is <code>create_routes()</code>, and your goal is stop <strong>6</strong>. Keep those names and values. The older guide in your folder describes a different, eight-stop version.</p>
+<div class="memory">Your current project: 10 stops · 14 directed route entries · MAP_ORIGIN (0, 0) · goal 6 · 1280 × 800.</div>
+<p>The original files have only been inspected. The code examples were checked separately; they are instructions for changes you would make yourself.</p>
+<p class="notice"><strong>Between supervised exam sessions:</strong> confirm with your exams officer whether you may read this new guidance. Cambridge says supporting work must remain secure and no new or additional supporting work may be brought in after the test starts. This guide does not establish permission to use it tomorrow. <a href="https://help.cambridgeinternational.org/hc/en-gb/articles/37439377928978-Component-2-Externally-Set-Assignment-What-happens-between-the-timed-test-sessions">Official guidance</a>.</p>
+<p>This portable pack contains the guide and its two reference images. It does not contain a modified game project.</p>
+</section>
+
+<section id="plan"><h2>The five-hour schedule</h2>
+<table><thead><tr><th>Elapsed time</th><th>Job</th><th>Stop when…</th></tr></thead><tbody>
+<tr><td>0:00–0:20</td><td>Correct names, mouse input and option text.</td><td>The goal is named Potsdamer Tor; buttons use names.</td></tr>
+<tr><td>0:20–0:40</td><td>Hover ring.</td><td>Hover shows a ring; moving away clears it; no journey is booked.</td></tr>
+<tr><td>0:40–1:35</td><td>Make marker and route highlight follow paths.</td><td>Road and train movement match the image, or the safe fallback is enabled.</td></tr>
+<tr><td>1:35–2:20</td><td>Panel layout and rounded, coloured controls.</td><td>Options and connection text do not overlap.</td></tr>
+<tr><td>2:20–2:55</td><td>Train and horse animation.</td><td>The correct vehicle appears, or one clear static frame is used.</td></tr>
+<tr><td>2:55–3:20</td><td>Pause and Restart.</td><td>Pause freezes time and vehicle frames; Restart resets the journey.</td></tr>
+<tr><td>3:20–3:55</td><td>Instructions screen.</td><td>It appears first, blocks game clicks and holds time at 08:00.</td></tr>
+<tr><td>3:55–4:20</td><td>Test a balanced timetable and fares.</td><td>Horse and train offer different, affordable ways to win.</td></tr>
+<tr><td>4:20–5:00</td><td>Play through, fix faults and save the submission evidence.</td><td>The saved game works from a fresh launch.</td></tr>
+</tbody></table>
+<p>Keep the last 40 minutes for verification. If paths are still causing problems at 1:35, use the fallback. If sprites are not ready by 2:55, use a single-frame icon or keep the marker. Do not spend the testing time drawing extra frames.</p>
+<p>A path-following vehicle is the most time-consuming item. The clock, readable choices, working Pause/Restart and a useful instructions screen are more achievable improvements within the session.</p>
+</section>
+
+<section id="how"><h2>How to use the code blocks without creating new errors</h2>
+<ol><li>Find the named function in <code>checkpoint_map.gd</code>.</li>
+<li>If a block says <strong>replace function</strong>, replace its complete old body, including the <code>func</code> line. Stop before the next top-level <code>func</code>. Do not append another function with the same name.</li>
+<li>If it says <strong>add function</strong>, add it at the left margin, outside every other function. Add new variables near the existing variables, not inside <code>_ready()</code>.</li>
+<li>Complete every code change in the current step before running it. A function may appear below its caller, but it must exist.</li>
+<li>Save the script and scene, then run that step’s checkpoint. If it fails, fix that step before adding the next one.</li></ol>
+<p>Some functions, especially <code>_ready()</code>, <code>_process()</code> and <code>update_display()</code>, are replaced again in a later step as features are added. The later version includes the earlier changes. This avoids relying on unfinished functions, which caused your previous “function not found” errors.</p>
+<p>Scene-node names are case-sensitive. Keep the existing children directly under Main unless this guide explicitly creates a new parent. In particular, keep <code>$Options</code>, <code>$Status2</code> and <code>$Connections</code> at their current paths.</p>
+</section>
+
+<section id="baseline"><h2>0:00–0:20 · Repair the existing version first</h2>
+<p>Save a checkpoint under the centre’s permitted storage arrangements. Before adding features, run one train journey and make sure your Day 1 version still loads.</p>
+<p>Your visible <code>map</code> node uses <code>Screenshot 2026-10-28 113633.png</code>. Its position is <strong>(16, 103)</strong>, its size is <strong>(875, 591)</strong>, and the stops are aligned with that stretched image. Keep this unchanged while improving the surrounding interface.</p>
+<div class="comparison"><figure><img src="Day_2_From_Progress/assets/current_map.png" alt="Map currently used by the Day 1 project"><figcaption>Your actual map: the stops and route geometry below belong to this image.</figcaption></figure><figure><img src="Day_2_From_Progress/assets/layout_reference.png" alt="Supporting-studies layout reference"><figcaption>Use this as the interface reference. Its schematic geography is different, so do not copy its old stop coordinates.</figcaption></figure></div>
+<h3>Correct the names, without moving or renumbering stops</h3>
+<p>Several entries in <code>scripts/route_data.gd</code> are shifted by one or two stops. The goal’s name is blank. Use the corrected entries in the code below. “Road stop 2” and “Road stop 5” are neutral game labels for the two unlabelled circles in your image; they are not historical place names.</p>
+<table><thead><tr><th>Stop ID</th><th>Name</th><th>Position</th><th>Type</th></tr></thead><tbody><tr><td>0</td><td>Potsdam</td><td>(80, 509)</td><td>Road stop</td></tr><tr><td>1</td><td>Glienicke</td><td>(208, 478)</td><td>Road stop</td></tr><tr><td>2</td><td>Road stop 2</td><td>(484, 444)</td><td>Road stop</td></tr><tr><td>3</td><td>Zehlendorf</td><td>(560, 421)</td><td>Road stop</td></tr><tr><td>4</td><td>Steglitz</td><td>(688, 373)</td><td>Road stop</td></tr><tr><td>5</td><td>Road stop 5</td><td>(782, 321)</td><td>Road stop</td></tr><tr><td>6</td><td>Potsdamer Tor</td><td>(824, 259)</td><td>Road stop</td></tr><tr><td>7</td><td>Potsdam Station</td><td>(102, 551)</td><td>Train station</td></tr><tr><td>8</td><td>Zehlendorf Station</td><td>(577, 453)</td><td>Train station</td></tr><tr><td>9</td><td>Potsdamer Bahnhof</td><td>(828, 288)</td><td>Train station</td></tr></tbody></table>
+<h3>Make decorative controls ignore the mouse</h3>
+<p>Select <code>map</code>, the hidden reference images <code>Maplayout</code> and <code>maplayout2</code>, the background, the side panel and the ordinary Labels. Set <strong>Mouse → Filter → Ignore</strong> in the Inspector. Keep Buttons able to receive input. The instruction screen added later is the exception: it must block clicks.</p>
+<p><code>_unhandled_input()</code> only receives events that other controls have not consumed. A TextureRect covering the map can otherwise prevent the stop click from reaching your script.</p>
+<h3>Apply the baseline changes</h3>
+<p>These keep your gameplay but fix the text and cancellation rule. The two boolean variables added here are initially false; later steps use them for Pause and Instructions.</p>
+<p class="code-location"><strong>1. checkpoint_map.gd</strong> · After arrival_time declaration. Replace this exact fragment:</p><pre><code>var arrival_time = 0.0</code></pre><p>with:</p><pre><code>var arrival_time = 0.0
+var paused = false
+var reading_instructions = false</code></pre><p>Keep the rest of the surrounding function or file.</p>
+<p class="code-location"><strong>2. scripts/route_data.gd</strong> · Replace only the <code>STOPS</code> array, from its <code>const</code> line through the matching closing <code>]</code>:</p><pre><code>const STOPS: Array[Dictionary] = [
+	{&quot;pos&quot;: Vector2(80, 509), &quot;rail&quot;: false, &quot;name&quot;: &quot;Potsdam&quot;},
+	{&quot;pos&quot;: Vector2(208, 478), &quot;rail&quot;: false, &quot;name&quot;: &quot;Glienicke&quot;},
+	{&quot;pos&quot;: Vector2(484, 444), &quot;rail&quot;: false, &quot;name&quot;: &quot;Road stop 2&quot;},
+	{&quot;pos&quot;: Vector2(560, 421), &quot;rail&quot;: false, &quot;name&quot;: &quot;Zehlendorf&quot;},
+	{&quot;pos&quot;: Vector2(688, 373), &quot;rail&quot;: false, &quot;name&quot;: &quot;Steglitz&quot;},
+	{&quot;pos&quot;: Vector2(782, 321), &quot;rail&quot;: false, &quot;name&quot;: &quot;Road stop 5&quot;},
+	{&quot;pos&quot;: Vector2(824, 259), &quot;rail&quot;: false, &quot;name&quot;: &quot;Potsdamer Tor&quot;},
+	{&quot;pos&quot;: Vector2(102, 551), &quot;rail&quot;: true, &quot;name&quot;: &quot;Potsdam Station&quot;},
+	{&quot;pos&quot;: Vector2(577, 453), &quot;rail&quot;: true, &quot;name&quot;: &quot;Zehlendorf Station&quot;},
+	{&quot;pos&quot;: Vector2(828, 288), &quot;rail&quot;: true, &quot;name&quot;: &quot;Potsdamer Bahnhof&quot;},
+]</code></pre>
+<p class="code-location"><strong>3. checkpoint_map.gd</strong> · Add function <code>controls_blocked()</code>:</p><pre><code>func controls_blocked() -&gt; bool:
+	return paused or reading_instructions or state == State.FINISHED</code></pre>
+<p class="code-location"><strong>4. checkpoint_map.gd</strong> · Add function <code>stop_name()</code>:</p><pre><code>func stop_name(index: int) -&gt; String:
+	return str(Data.STOPS[index].name)</code></pre>
+<p class="code-location"><strong>5. checkpoint_map.gd</strong> · Replace the complete <code>select_stop()</code> function:</p><pre><code>func select_stop(stop_index: int) -&gt; void:
+	if controls_blocked() or stop_index &lt; 0 or stop_index &gt;= Data.STOPS.size():
+		return
+	if state == State.WAITING and stop_index == current_stop:
+		cancel_wait()
+		return
+	if state != State.READY:
+		return
+	selected_stop = -1 if stop_index == current_stop else stop_index
+	rebuild_options()
+	update_display()</code></pre>
+<p class="code-location"><strong>6. checkpoint_map.gd</strong> · First condition inside choose_route. Replace this exact fragment:</p><pre><code>func choose_route(route_index: int) -&gt; void:
+	if state != State.READY:</code></pre><p>with:</p><pre><code>func choose_route(route_index: int) -&gt; void:
+	if controls_blocked() or state != State.READY:</code></pre><p>Keep the rest of the surrounding function or file.</p>
+<p class="code-location"><strong>7. checkpoint_map.gd</strong> · At the beginning of _unhandled_input. Replace this exact fragment:</p><pre><code>func _unhandled_input(event: InputEvent) -&gt; void:</code></pre><p>with:</p><pre><code>func _unhandled_input(event: InputEvent) -&gt; void:
+	if controls_blocked():
+		return</code></pre><p>Keep the rest of the surrounding function or file.</p>
+<p class="code-location"><strong>8. checkpoint_map.gd</strong> · Replace the complete <code>update_display()</code> function:</p><pre><code>func update_display() -&gt; void:
+	clock_label.text = time_text(game_time)
+	money_label.text = &quot;%d tokens&quot; % tokens
+	status_label.text = stop_name(current_stop)
+	status_label_2.text = &quot;Choose below, or click a map stop.&quot;
+	if state == State.READY and selected_stop != -1:
+		status_label_2.text = &quot;To &quot; + stop_name(selected_stop)
+		if available_routes().is_empty():
+			status_label_2.text += &quot; | No direct route&quot;
+	elif state == State.WAITING:
+		status_label_2.text = &quot;Waiting until %s\nClick your current stop to cancel.&quot; % time_text(departure_time)
+	elif state == State.TRAVELLING:
+		var route: Dictionary = routes[active_route]
+		status_label_2.text = &quot;%s to %s\nArrive %s&quot; % [route.mode.capitalize(), stop_name(route.to), time_text(arrival_time)]
+	elif state == State.FINISHED:
+		status_label_2.text = &quot;Arrived on time!&quot; if game_time &lt;= DEADLINE else &quot;Arrived too late. Try another route.&quot;
+	if paused:
+		status_label_2.text = &quot;Paused. Press Resume to continue.&quot;
+
+	var preview_stop = -1
+	var preview_time = INF
+	for button in options.get_children():
+		var route: Dictionary = routes[int(button.get_meta(&quot;route_index&quot;))]
+		var leaves = next_departure(route)
+		button.text = &quot;%s &gt; %s\nDep %s  Arr %s  |  %d tokens&quot; % [route.mode.capitalize(), stop_name(route.to), time_text(leaves), time_text(leaves + route.duration), route.cost]
+		button.disabled = controls_blocked() or route.cost &gt; tokens
+		if route.cost &gt; tokens:
+			button.text += &quot;\nToo expensive&quot;
+		if selected_stop != -1:
+			preview_stop = selected_stop
+			preview_time = minf(preview_time, leaves + route.duration)
+	if state == State.WAITING or state == State.TRAVELLING:
+		preview_stop = int(routes[active_route].to)
+		preview_time = arrival_time
+	connections_label.text = connection_note(preview_stop, preview_time) if preview_stop &gt;= 0 else &quot;&quot;
+	queue_redraw()</code></pre>
+<p class="code-location"><strong>9. checkpoint_map.gd</strong> · Replace the complete <code>connection_note()</code> function:</p><pre><code>func connection_note(stop_index: int, at_time: float) -&gt; String:
+	if stop_index == GOAL:
+		return &quot;&quot;
+	var lines: Array[String] = [&quot;Next from %s (after %s):&quot; % [stop_name(stop_index), time_text(at_time)]]
+	for route in routes:
+		if route.from != stop_index:
+			continue
+		var leaves = next_departure(route, at_time)
+		lines.append(&quot;%s &gt; %s: %s - %s, %d tokens&quot; % [route.mode.capitalize(), stop_name(route.to), time_text(leaves), time_text(leaves + route.duration), route.cost])
+	return &quot;\n&quot;.join(lines)</code></pre>
+<p class="code-location"><strong>10. checkpoint_map.gd</strong> · Replace the complete <code>_process()</code> function:</p><pre><code>func _process(delta: float) -&gt; void:
+	if not controls_blocked():
+		tick_clock(delta)
+	update_display()</code></pre>
+<div class="check"><strong>Check:</strong> the options show destination names. While waiting, only clicking your current stop cancels. The gold marker still uses the old straight movement for now. The map stays at its existing size and position.</div>
+</section>
+
+<section id="hover"><h2>0:20–0:40 · Add hover without changing selection</h2>
+<p>You already have <code>hovered_stop = -1</code>, but the commented mouse-button code does not detect movement. Remove that old commented attempt. Replace the existing <code>hover_stop()</code> helper as shown below; the new <code>update_hover()</code> function calls it.</p>
+<p><strong>Hover and selection are different values.</strong> Hover is temporary and follows the pointer. Selection persists after a click and filters the travel options. Do not call <code>select_stop()</code> just because the pointer moves over a stop.</p>
+<p class="code-location"><strong>1. checkpoint_map.gd</strong> · Replace the complete <code>hover_stop()</code> function:</p><pre><code>func hover_stop(stop_index: int) -&gt; void:
+	if hovered_stop != stop_index:
+		hovered_stop = stop_index
+		queue_redraw()</code></pre>
+<p class="code-location"><strong>2. checkpoint_map.gd</strong> · Add function <code>update_hover()</code>:</p><pre><code>func update_hover() -&gt; void:
+	var found = -1
+	if not controls_blocked():
+		var mouse_position = get_local_mouse_position()
+		for index in range(Data.STOPS.size()):
+			if mouse_position.distance_to(MAP_ORIGIN + Data.STOPS[index].pos) &lt;= 24.0:
+				found = index
+				break
+	hover_stop(found)</code></pre>
+<p class="code-location"><strong>3. checkpoint_map.gd</strong> · Replace the complete <code>_draw()</code> function:</p><pre><code>func _draw() -&gt; void:
+	for index in range(Data.STOPS.size()):
+		if index == selected_stop or index == hovered_stop:
+			var point: Vector2 = MAP_ORIGIN + Data.STOPS[index].pos
+			draw_arc(point, 20.0, 0.0, TAU, 32, Color(&quot;287fa3&quot;), 2.0, true)
+	draw_arc(player_position(), 20.0, 0.0, TAU, 32, Color(&quot;d59a00&quot;), 4.0, true)
+	draw_circle(player_position(), 4.0, Color(&quot;d59a00&quot;))</code></pre>
+<p class="code-location"><strong>4. checkpoint_map.gd</strong> · Replace the complete <code>_process()</code> function:</p><pre><code>func _process(delta: float) -&gt; void:
+	update_hover()
+	if not controls_blocked():
+		tick_clock(delta)
+	update_display()</code></pre>
+<p>The hover helper checks the mouse position each frame. It starts with no hovered stop, then looks for a centre within 24 pixels. It clears the hover when the mouse leaves all stops. The drawing condition accepts either a selected or hovered stop.</p>
+<p>The map image already contains its circles, squares and text. The new <code>_draw()</code> draws only the extra rings and travel overlay. It does not re-create the baked station symbols.</p>
+<div class="check"><strong>Check:</strong> move over a stop without clicking: a blue outline appears. Move away: that hover outline disappears. Click a different stop: its selection outline persists. Hovering must not spend tokens, change location or change the chosen destination.</div>
+</section>
+
+<section id="paths"><h2>0:40–1:35 · Trace paths over the existing roads</h2>
+<p>Your current animation draws a straight line and uses <code>start.lerp(finish, progress)</code>. The bitmap road bends, so that calculation cuts across the map. Removing the line alone would still leave the marker moving in a straight line.</p>
+<p>Use one <code>Curve2D</code> per horse or train leg. The gold marker, optional route highlight and later vehicle sprite will all use that same curve. The existing clock remains responsible for how far through the journey you are.</p>
+<h3>Create the path nodes</h3>
+<ol><li>Add a <strong>Node2D</strong> directly under Main. Name it <code>Routes</code>. Its Position must be (0, 0), Scale (1, 1) and Rotation 0.</li>
+<li>Add a <strong>Path2D</strong> inside Routes. Name it <code>R0</code>. Keep its Position (0, 0), Scale (1, 1) and Rotation 0 too.</li>
+<li>Select R0 and, if its Curve field is empty, create a new <strong>Curve2D</strong>. Use the path editor’s <strong>Create Points</strong> tool in the 2D toolbar.</li>
+<li>Click the start stop, a few bends along the red road, then the end stop. Click single points; you do not need smooth Bézier handles. Three to eight well-placed points are usually enough for a road leg.</li>
+<li>Switch back to editing points and adjust obvious corners. Zoom in if necessary, but do not drag the whole Path2D node or the background image.</li>
+<li>Repeat for R1–R7 using the endpoint table. Create a fresh curve for each Path2D. If you duplicate a Path2D, make its Curve resource unique before editing, or both paths may change together.</li></ol>
+<pre><code>Main
+├── map                 Existing TextureRect, unchanged
+├── Routes              Node2D at (0, 0)
+│   ├── R0              Path2D: horse 0 → 1
+│   ├── R1              Path2D: horse 1 → 2
+│   ├── R2              Path2D: horse 2 → 3
+│   ├── R3              Path2D: horse 3 → 4
+│   ├── R4              Path2D: horse 4 → 5
+│   ├── R5              Path2D: horse 5 → 6
+│   ├── R6              Path2D: train 7 → 8
+│   └── R7              Path2D: train 8 → 9
+└── … existing interface children</code></pre>
+<table><thead><tr><th>Path node</th><th>Mode</th><th>Stop IDs</th><th>First point</th><th>Last point</th></tr></thead><tbody><tr><td>R0</td><td>horse</td><td>0 → 1</td><td>(80, 509)</td><td>(208, 478)</td></tr><tr><td>R1</td><td>horse</td><td>1 → 2</td><td>(208, 478)</td><td>(484, 444)</td></tr><tr><td>R2</td><td>horse</td><td>2 → 3</td><td>(484, 444)</td><td>(560, 421)</td></tr><tr><td>R3</td><td>horse</td><td>3 → 4</td><td>(560, 421)</td><td>(688, 373)</td></tr><tr><td>R4</td><td>horse</td><td>4 → 5</td><td>(688, 373)</td><td>(782, 321)</td></tr><tr><td>R5</td><td>horse</td><td>5 → 6</td><td>(782, 321)</td><td>(824, 259)</td></tr><tr><td>R6</td><td>train</td><td>7 → 8</td><td>(102, 551)</td><td>(577, 453)</td></tr><tr><td>R7</td><td>train</td><td>8 → 9</td><td>(577, 453)</td><td>(828, 288)</td></tr></tbody></table>
+<p>R6 means <strong>route entry 6</strong>, not stop 6. There are six horse legs first, then two train legs. Do not use the older guide’s R4/R5 train numbering.</p>
+<p>All the coordinates in this guide are in Main’s coordinate space. We directly sample the Curve2D, so no PathFollow2D child is needed. Keeping Routes and each R node at zero makes their points line up with Main’s drawing and the stop data. The helper also snaps the first and last curve points to the stored stop centres.</p>
+<p>The six walking entries are short transfers. The code makes straight curves for them, so you do not need R8–R13 nodes. The train line has a small gap beside the Potsdam Station label in the image; it is acceptable for the marker to cross that printed gap.</p>
+<h3>Add the shared path movement</h3>
+<p class="code-location"><strong>1. checkpoint_map.gd</strong> · Below speed constants. Replace this exact fragment:</p><pre><code>const TRAVEL_SPEED = 4.0</code></pre><p>with:</p><pre><code>const TRAVEL_SPEED = 4.0
+const ANIMATE_TRAVEL = true
+var route_curves: Dictionary = {}</code></pre><p>Keep the rest of the surrounding function or file.</p>
+<p class="code-location"><strong>2. checkpoint_map.gd</strong> · Add function <code>build_route_curves()</code>:</p><pre><code>func build_route_curves() -&gt; void:
+	route_curves.clear()
+	for index in range(routes.size()):
+		var route: Dictionary = routes[index]
+		var curve: Curve2D
+		if route.mode == &quot;walk&quot;:
+			curve = Curve2D.new()
+			curve.add_point(Data.STOPS[route.from].pos)
+			curve.add_point(Data.STOPS[route.to].pos)
+		else:
+			var path = get_node_or_null(&quot;Routes/R%d&quot; % index) as Path2D
+			if path == null or path.curve == null or path.curve.point_count &lt; 2:
+				continue
+			curve = path.curve.duplicate() as Curve2D
+			curve.set_point_position(0, Data.STOPS[route.from].pos)
+			curve.set_point_position(curve.point_count - 1, Data.STOPS[route.to].pos)
+		route_curves[index] = curve</code></pre>
+<p class="code-location"><strong>3. checkpoint_map.gd</strong> · Replace the complete <code>player_position()</code> function:</p><pre><code>func player_position() -&gt; Vector2:
+	var position_at_stop: Vector2 = MAP_ORIGIN + Data.STOPS[current_stop].pos
+	if state != State.TRAVELLING or not ANIMATE_TRAVEL:
+		return position_at_stop
+	if not route_curves.has(active_route):
+		return position_at_stop
+	var curve: Curve2D = route_curves[active_route]
+	return MAP_ORIGIN + curve.sample_baked(curve.get_baked_length() * travel_progress())</code></pre>
+<p class="code-location"><strong>4. checkpoint_map.gd</strong> · Replace the complete <code>_draw()</code> function:</p><pre><code>func _draw() -&gt; void:
+	if state == State.TRAVELLING and ANIMATE_TRAVEL and route_curves.has(active_route):
+		var curve: Curve2D = route_curves[active_route]
+		var points = curve.get_baked_points()
+		for index in range(points.size()):
+			points[index] += MAP_ORIGIN
+		var mode: String = routes[active_route].mode
+		var colour = Color(&quot;cc3333&quot;) if mode == &quot;horse&quot; else Color(&quot;222222&quot;)
+		if mode == &quot;walk&quot;:
+			colour = Color(&quot;777777&quot;)
+		colour.a = 0.6 * travel_progress()
+		if points.size() &gt;= 2:
+			draw_polyline(points, colour, 5.0, true)
+	for index in range(Data.STOPS.size()):
+		if index == selected_stop or index == hovered_stop:
+			var point: Vector2 = MAP_ORIGIN + Data.STOPS[index].pos
+			draw_arc(point, 20.0, 0.0, TAU, 32, Color(&quot;287fa3&quot;), 2.0, true)
+	draw_arc(player_position(), 20.0, 0.0, TAU, 32, Color(&quot;d59a00&quot;), 4.0, true)
+	draw_circle(player_position(), 4.0, Color(&quot;d59a00&quot;))</code></pre>
+<p class="code-location"><strong>5. checkpoint_map.gd</strong> · Replace the complete <code>_ready()</code> function:</p><pre><code>func _ready() -&gt; void:
+	build_route_curves()
+	rebuild_options()
+	update_display()</code></pre>
+<p><code>get_baked_length()</code> is the path length in pixels. Multiplying it by <code>travel_progress()</code> gives a distance along the path. <code>sample_baked()</code> returns the point at that distance. The journey still takes its scheduled duration even if one drawn path is longer than another.</p>
+<div class="check"><strong>Check one road and one train route first:</strong> the marker must start on the departure stop, stay close to the line and finish on the arrival stop. The highlighted line must follow the same geometry. Only then trace the remaining paths.</div>
+<h3>If it is taking too long</h3>
+<p><strong>Still add all the code in this step, even if you skip tracing the paths.</strong> Later steps call these helper functions. Set <code>ANIMATE_TRAVEL = false</code>. The marker will stay at the departure stop during travel and move to the destination on arrival; the status and timetable still work. The path highlight is disabled. This removes the inaccurate movement rather than leaving a marker crossing water.</p>
+<p>If only a particular path is missing or empty, the code uses that same stationary-marker fallback for that leg. A later vehicle icon may still animate its frames at the departure position; that is a mode indicator, not spatial movement. Do not spend more than this 55-minute slot trying to perfect the curves.</p>
+</section>
+
+<section id="ui"><h2>1:35–2:20 · Bring the interface closer to the studies</h2>
+<p>Keep the map where it is. Most of the improvement comes from moving and styling the surrounding controls, rather than rebuilding the scene.</p>
+<h3>Set these existing node values</h3>
+<table><thead><tr><th>Node</th><th>Position</th><th>Size</th><th>Font size</th></tr></thead><tbody><tr><td>Title</td><td>(26, 18)</td><td>520 × 40</td><td>29</td></tr><tr><td>SubTitle</td><td>(26, 58)</td><td>620 × 24</td><td>16</td></tr><tr><td>Clock</td><td>(675, 15)</td><td>180 × 47</td><td>34</td></tr><tr><td>Money</td><td>(860, 20)</td><td>170 × 40</td><td>25</td></tr><tr><td>Sidepanel</td><td>(910, 111)</td><td>346 × 666</td><td>—</td></tr><tr><td>Goal1</td><td>(930, 128)</td><td>306 × 24</td><td>17</td></tr><tr><td>Goal2</td><td>(930, 154)</td><td>306 × 32</td><td>16</td></tr><tr><td>Status</td><td>(930, 198)</td><td>306 × 32</td><td>23</td></tr><tr><td>Status2</td><td>(930, 234)</td><td>306 × 52</td><td>15</td></tr><tr><td>Options</td><td>(925, 295)</td><td>318 × 240</td><td>Button font set in code</td></tr><tr><td>Connections</td><td>(930, 550)</td><td>306 × 210</td><td>14</td></tr></tbody></table>
+<p>For Status2 and Connections, enable <strong>Autowrap Mode → Word Smart</strong>. Give ordinary text the colour <code>#213c43</code>; use <code>#24757a</code> for the clock and goal heading. Change the BG colour to <code>#f4f5ef</code>. Remove the misspelt placeholder “Tockens”; runtime text uses “tokens”.</p>
+<p>Options and Connections currently overlap. The new positions reserve separate space for each. Keep Options directly under Main so <code>$Options</code> still works. This route graph has at most two outgoing choices at a stop; a ScrollContainer is unnecessary for this session.</p>
+<h3>Round the side panel</h3>
+<ol><li>Right-click <code>Sidepanel</code> in the scene tree and choose <strong>Change Type</strong>, then <strong>Panel</strong>. Keep the exact name and direct parent.</li>
+<li>Under <strong>Theme Overrides → Styles → Panel</strong>, create a <strong>StyleBoxFlat</strong>.</li>
+<li>Set its background to white and all four corner radii to 10.</li>
+<li>Keep Mouse Filter Ignore and its Z Index behind the text, such as -2.</li></ol>
+<p>A ColorRect does not have the Panel’s styled background. Changing its type is what allows the rounded StyleBox to appear.</p>
+<h3>Style the buttons created by your script</h3>
+<p class="code-location"><strong>1. checkpoint_map.gd</strong> · Add function <code>button_style()</code>:</p><pre><code>func button_style(colour: Color) -&gt; StyleBoxFlat:
+	var style = StyleBoxFlat.new()
+	style.bg_color = colour
+	style.set_corner_radius_all(10)
+	style.content_margin_left = 12
+	style.content_margin_right = 12
+	style.content_margin_top = 8
+	style.content_margin_bottom = 8
+	return style</code></pre>
+<p class="code-location"><strong>2. checkpoint_map.gd</strong> · Add function <code>style_button()</code>:</p><pre><code>func style_button(button: Button, minimum: Vector2 = Vector2(304, 60)) -&gt; void:
+	button.custom_minimum_size = minimum
+	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	button.add_theme_font_size_override(&quot;font_size&quot;, 14)
+	button.add_theme_color_override(&quot;font_color&quot;, Color(&quot;213c43&quot;))
+	button.add_theme_color_override(&quot;font_hover_color&quot;, Color.WHITE)
+	button.add_theme_color_override(&quot;font_pressed_color&quot;, Color.WHITE)
+	button.add_theme_color_override(&quot;font_disabled_color&quot;, Color(&quot;819095&quot;))
+	button.add_theme_stylebox_override(&quot;normal&quot;, button_style(Color(&quot;e9f1ee&quot;)))
+	button.add_theme_stylebox_override(&quot;hover&quot;, button_style(Color(&quot;24757a&quot;)))
+	button.add_theme_stylebox_override(&quot;pressed&quot;, button_style(Color(&quot;1b5d61&quot;)))
+	button.add_theme_stylebox_override(&quot;disabled&quot;, button_style(Color(&quot;eeeeea&quot;)))</code></pre>
+<p class="code-location"><strong>3. checkpoint_map.gd</strong> · Add function <code>apply_ui_theme()</code>:</p><pre><code>func apply_ui_theme() -&gt; void:
+	var side_panel = get_node_or_null(&quot;Sidepanel&quot;) as Panel
+	if side_panel != null:
+		side_panel.add_theme_stylebox_override(&quot;panel&quot;, button_style(Color.WHITE))
+	var background = get_node_or_null(&quot;BG&quot;) as ColorRect
+	if background != null:
+		background.color = Color(&quot;f4f5ef&quot;)</code></pre>
+<p class="code-location"><strong>4. checkpoint_map.gd</strong> · Inside rebuild_options, replace button minimum-size line. Replace this exact fragment:</p><pre><code>		button.custom_minimum_size = Vector2(320, 70)</code></pre><p>with:</p><pre><code>		style_button(button)</code></pre><p>Keep the rest of the surrounding function or file.</p>
+<p class="code-location"><strong>5. checkpoint_map.gd</strong> · Replace the complete <code>_ready()</code> function:</p><pre><code>func _ready() -&gt; void:
+	build_route_curves()
+	apply_ui_theme()
+	rebuild_options()
+	update_display()</code></pre>
+<p>The helper builds normal, hover, pressed and disabled appearances. <code>rebuild_options()</code> calls it for each new journey button. Styling just one temporary button in the editor would not affect the buttons created at runtime.</p>
+<p>The hover and pressed styles use white text on teal. Normal buttons use dark text on pale green. Keep the font around 14 pixels and left-align the two-line journey information. No icon redesign is needed for this step.</p>
+<div class="check"><strong>Check:</strong> visit Potsdam, Zehlendorf and a train station. Names should fit inside the sidebar, and the connection preview must not sit on top of the option buttons. Hover a button and check that its text remains readable.</div>
+</section>
+
+<section id="sprites"><h2>2:20–2:55 · Add the vehicle icon and its frames</h2>
+<p>Your supplied Day 1 folder contains three screenshots, but <strong>no separate train or horse sprite sheet</strong>. Do not try to assign a path to a file that is not there.</p>
+<p>The earlier prototype has an existing sheet at <code>C:/Users/Petr/Documents/dmd2026/assets/art/transport_frames.png</code>. It is 128 × 128 pixels, with four 64 × 64 cells: two train frames on the top row and two horse frames on the bottom row. Use it only if it is part of the assets your centre permits for this session. Otherwise use an already permitted icon or keep the marker; do not fetch new assets during the test without permission.</p>
+<h3>Set up Passenger</h3>
+<ol><li>If the sheet is available among your permitted resources, copy it into this project’s <code>assets</code> folder through the approved workflow and let Godot import it.</li>
+<li>Add <strong>AnimatedSprite2D</strong> directly under Main and name it <code>Passenger</code>. Set Z Index to <strong>4</strong>, Scale to <strong>(1, 1)</strong> and Rotation to 0. Leave Centered enabled.</li>
+<li>Create a new <strong>SpriteFrames</strong> resource. Open it in the bottom panel.</li>
+<li>Create an animation named exactly <code>train</code>. Choose <strong>Add frames from a Sprite Sheet</strong>. Set Horizontal to <strong>2</strong> and Vertical to <strong>2</strong>. Select the two top cells in left-to-right order. Set speed to <strong>5 FPS</strong> and enable looping.</li>
+<li>Create <code>horse</code> the same way, using the two bottom cells. Set it to <strong>7 FPS</strong> and looping.</li>
+<li>Leave autoplay off. Preview each animation in the editor before connecting it to the game.</li></ol>
+<p class="code-location"><strong>1. checkpoint_map.gd</strong> · Add function <code>update_vehicle()</code>:</p><pre><code>func update_vehicle() -&gt; void:
+	var vehicle = get_node_or_null(&quot;Passenger&quot;) as AnimatedSprite2D
+	if vehicle == null:
+		return
+	vehicle.visible = false
+	if state != State.TRAVELLING:
+		vehicle.pause()
+		return
+	var mode: String = routes[active_route].mode
+	if mode == &quot;walk&quot; or vehicle.sprite_frames == null or not vehicle.sprite_frames.has_animation(mode):
+		vehicle.pause()
+		return
+	if vehicle.sprite_frames.get_frame_count(mode) == 0:
+		vehicle.pause()
+		return
+	vehicle.visible = true
+	vehicle.position = player_position() + Vector2(0, -18)
+	vehicle.flip_h = (mode == &quot;train&quot;)
+	if vehicle.animation != mode:
+		vehicle.animation = mode
+	if controls_blocked():
+		vehicle.pause()
+	elif not vehicle.is_playing():
+		vehicle.play(mode)</code></pre>
+<p class="code-location"><strong>2. checkpoint_map.gd</strong> · Inside <code>update_display()</code>, replace only these ending lines:</p><pre><code>	queue_redraw()</code></pre><p>with:</p><pre><code>	update_vehicle()
+	queue_redraw()</code></pre><p>Keep the rest of this function unchanged.</p>
+<p><code>update_vehicle()</code> uses the active route’s mode to choose an animation. It hides the sprite when the player is walking, waiting or choosing. Its position comes from <code>player_position()</code>, shifted up by 18 pixels so the gold ring remains visible.</p>
+<p><strong>If you skip the sprite artwork, still add <code>update_vehicle()</code> and its call inside <code>update_display()</code>.</strong> The helper tolerates Passenger being absent, so the game can still run. Missing or empty animations likewise leave the marker available. Do not reset <code>frame</code> every frame: that would prevent the two images from playing.</p>
+<p>The existing train picture faces left, so the helper flips it for travel towards Berlin. Check the direction visually if you use a different image. Keep Rotation at zero; rotating a side-view carriage around a curve tends to make it look as if it is tipping over.</p>
+<div class="check"><strong>Check:</strong> a horse journey shows the horse, a train shows the train, and a walk shows only the marker. Frames should change while travelling. If only one frame is usable, keep a static icon rather than spend the remaining session making new artwork.</div>
+</section>
+
+<section id="pause"><h2>2:55–3:20 · Add Pause and Restart</h2>
+<p>Create two Button children directly under Main:</p>
+<table><thead><tr><th>Name</th><th>Text</th><th>Position</th><th>Size</th></tr></thead><tbody>
+<tr><td>Pause</td><td>Pause</td><td>(1042, 25)</td><td>92 × 43</td></tr>
+<tr><td>Restart</td><td>Restart</td><td>(1144, 25)</td><td>110 × 43</td></tr>
+</tbody></table>
+<p>The code connects their <code>pressed</code> signals in <code>_ready()</code>. Do not also connect them through the editor’s Node/Signals panel, or one press can run the action twice.</p>
+<p class="code-location"><strong>1. checkpoint_map.gd</strong> · Add function <code>toggle_pause()</code>:</p><pre><code>func toggle_pause() -&gt; void:
+	if reading_instructions or state == State.FINISHED:
+		return
+	paused = not paused
+	update_hover()
+	update_display()</code></pre>
+<p class="code-location"><strong>2. checkpoint_map.gd</strong> · Add function <code>reset_game()</code>:</p><pre><code>func reset_game() -&gt; void:
+	get_tree().reload_current_scene()</code></pre>
+<p class="code-location"><strong>3. checkpoint_map.gd</strong> · Add function <code>setup_toolbar()</code>:</p><pre><code>func setup_toolbar() -&gt; void:
+	var pause_button = get_node_or_null(&quot;Pause&quot;) as Button
+	if pause_button != null:
+		style_button(pause_button, Vector2(92, 43))
+		pause_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+		pause_button.pressed.connect(toggle_pause)
+	var restart_button = get_node_or_null(&quot;Restart&quot;) as Button
+	if restart_button != null:
+		style_button(restart_button, Vector2(110, 43))
+		restart_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+		restart_button.pressed.connect(reset_game)</code></pre>
+<p class="code-location"><strong>4. checkpoint_map.gd</strong> · Add function <code>update_toolbar()</code>:</p><pre><code>func update_toolbar() -&gt; void:
+	var pause_button = get_node_or_null(&quot;Pause&quot;) as Button
+	if pause_button != null:
+		pause_button.text = &quot;Resume&quot; if paused else &quot;Pause&quot;
+		pause_button.disabled = reading_instructions or state == State.FINISHED</code></pre>
+<p class="code-location"><strong>5. checkpoint_map.gd</strong> · Inside <code>update_display()</code>, replace only these ending lines:</p><pre><code>	update_vehicle()
+	queue_redraw()</code></pre><p>with:</p><pre><code>	update_toolbar()
+	update_vehicle()
+	queue_redraw()</code></pre><p>Keep the rest of this function unchanged.</p>
+<p class="code-location"><strong>6. checkpoint_map.gd</strong> · Replace the complete <code>_ready()</code> function:</p><pre><code>func _ready() -&gt; void:
+	build_route_curves()
+	apply_ui_theme()
+	setup_toolbar()
+	rebuild_options()
+	update_display()</code></pre>
+<p><code>paused</code> is separate from State. A paused train must remember that it was TRAVELLING; a paused booking must remember that it was WAITING. We gate the clock and input, rather than replacing the travel state with a new PAUSED state.</p>
+<p>The sprite also pauses. Freezing only the clock would leave the horse or train animation moving while everything else is stopped. Resuming continues from the same animation position.</p>
+<p><code>reload_current_scene()</code> reloads the saved scene and resets the variables to their initial values. Save scene and script edits before testing Restart. After the next step, Restart will also show the instructions again.</p>
+<div class="check"><strong>Check both states:</strong> pause while waiting and while travelling. Wait several real seconds: clock, player position, tokens and vehicle frame should remain unchanged. Resume; the journey should continue. Restart mid-journey and verify 08:00, 10 tokens and Potsdam.</div>
+</section>
+
+<section id="instructions"><h2>3:20–3:55 · Add a short instructions screen</h2>
+<p>Use the feedback you already collected: make the objective and first action explicit. A few lines are enough. The player should not lose time while reading them.</p>
+<pre><code>Main
+└── Instructions             Control, full window, Z Index 10
+    ├── Shade                ColorRect, full window
+    └── Panel                Panel
+        ├── Title            Label
+        ├── Text             Label
+        └── Start            Button</code></pre>
+<p>Main is a Node2D, so a Control directly under it may need explicit size values rather than relying on a parent Control’s Full Rect preset. Set Instructions Position to (0, 0), Size to (1280, 800), and Z Index to 10. Set its Mouse Filter to <strong>Stop</strong>. Give Shade the same position and size within Instructions, a dark colour with alpha about 0.65, and Mouse Filter Stop.</p>
+<p>Set Panel Position to <strong>(170, 110)</strong> and Size to <strong>(940, 580)</strong>. Give it a pale <code>#f4f5ef</code> StyleBoxFlat with corner radius 14. Set Mouse Filter Stop. Add the three children below, using positions relative to Panel:</p>
+<table><thead><tr><th>Child</th><th>Position</th><th>Size</th><th>Settings</th></tr></thead><tbody>
+<tr><td>Title</td><td>(36, 28)</td><td>868 × 48</td><td>Font 30, dark text, Mouse Ignore</td></tr>
+<tr><td>Text</td><td>(36, 92)</td><td>868 × 368</td><td>Font 21, dark text, Word Smart wrap, Mouse Ignore</td></tr>
+<tr><td>Start</td><td>(670, 496)</td><td>234 × 50</td><td>Text “Start journey”; default mouse handling</td></tr>
+</tbody></table>
+<p>Set Title to <strong>YOUR FIRST JOURNEY</strong>. Set Text to:</p>
+<blockquote>Reach Potsdamer Tor by 09:30.<br>You start in Potsdam with 10 tokens.<br><br>
+The gold ring shows where you are.<br>Click a stop, then choose a journey on the right.<br>Check its departure, arrival and token cost.<br>
+Circles are horse stops. Squares are train stations.<br>Walk to Potsdam Station if you want to take the train.<br>The train ends at Potsdamer Bahnhof. Walk to the gate to finish.<br>
+Time passes while you choose and speeds up during a journey.<br>The clock is stopped while this screen is open.</blockquote>
+<p>Keep the instructions visible in the saved scene. Shade comes before Panel in the scene tree, so the panel and Start button are drawn above it.</p>
+<p class="code-location"><strong>1. checkpoint_map.gd</strong> · Add function <code>setup_instructions()</code>:</p><pre><code>func setup_instructions() -&gt; void:
+	var screen = get_node_or_null(&quot;Instructions&quot;) as Control
+	var start_button = get_node_or_null(&quot;Instructions/Panel/Start&quot;) as Button
+	if screen == null or start_button == null:
+		return
+	reading_instructions = true
+	screen.show()
+	style_button(start_button, Vector2(234, 50))
+	start_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	start_button.text = &quot;Start journey&quot;
+	start_button.pressed.connect(close_instructions)
+	var panel = get_node_or_null(&quot;Instructions/Panel&quot;) as Panel
+	if panel != null:
+		var panel_style = button_style(Color(&quot;f4f5ef&quot;))
+		panel_style.set_corner_radius_all(14)
+		panel.add_theme_stylebox_override(&quot;panel&quot;, panel_style)</code></pre>
+<p class="code-location"><strong>2. checkpoint_map.gd</strong> · Add function <code>close_instructions()</code>:</p><pre><code>func close_instructions() -&gt; void:
+	reading_instructions = false
+	var screen = get_node_or_null(&quot;Instructions&quot;) as Control
+	if screen != null:
+		screen.hide()
+	update_display()</code></pre>
+<p class="code-location"><strong>3. checkpoint_map.gd</strong> · Replace the complete <code>_ready()</code> function:</p><pre><code>func _ready() -&gt; void:
+	build_route_curves()
+	apply_ui_theme()
+	setup_toolbar()
+	setup_instructions()
+	rebuild_options()
+	update_display()</code></pre>
+<p>The shared clock/input gate uses <code>reading_instructions</code>. Closing the screen clears that flag, hides the overlay and refreshes the UI. Clicking Start must not simultaneously select a stop underneath it; the overlay’s mouse handling prevents the event reaching the map.</p>
+<div class="check"><strong>Fresh launch:</strong> read for 20 real seconds. It must still be 08:00 with 10 tokens. Try clicking the map through the dark area: no selection should change. Start the journey, then Restart: the instructions should appear again.</div>
+</section>
+
+<section id="balance"><h2>3:55–4:20 · Make both travel choices viable</h2>
+<p>There is a concrete problem in your current data: six horse legs at 2 tokens each cost <strong>12 tokens</strong>, but the player starts with 10. The player can spend everything reaching stop 5 and then cannot buy the last leg. With the current identical timetables, even an unlimited-budget horse route would arrive around <strong>09:55</strong>, after the deadline.</p>
+<p>Your first train also leaves at 08:05, exactly five minutes after the start. Since the clock advances before the first click, a five-minute walk usually reaches the station just after that departure. Give the player a few minutes of transfer slack instead of requiring a perfect click.</p>
+<h3>A proposed baseline to try</h3>
+<p>These are <strong>new balancing values</strong>, not values claimed to be already in your project or historically accurate. They preserve your ten stops and fourteen directed entries. The first route leaves at 08:06; the train starts at 08:10.</p>
+<table><thead><tr><th>Route ID</th><th>Stops</th><th>Mode</th><th>First departure</th><th>Interval</th><th>Duration</th><th>Fare</th></tr></thead><tbody><tr><td>0</td><td>0 → 1</td><td>horse</td><td>08:06</td><td>20 min</td><td>10 min</td><td>1</td></tr><tr><td>1</td><td>1 → 2</td><td>horse</td><td>08:18</td><td>20 min</td><td>14 min</td><td>1</td></tr><tr><td>2</td><td>2 → 3</td><td>horse</td><td>08:34</td><td>20 min</td><td>10 min</td><td>1</td></tr><tr><td>3</td><td>3 → 4</td><td>horse</td><td>08:46</td><td>20 min</td><td>14 min</td><td>1</td></tr><tr><td>4</td><td>4 → 5</td><td>horse</td><td>09:02</td><td>20 min</td><td>10 min</td><td>1</td></tr><tr><td>5</td><td>5 → 6</td><td>horse</td><td>09:14</td><td>20 min</td><td>10 min</td><td>1</td></tr><tr><td>6</td><td>7 → 8</td><td>train</td><td>08:10</td><td>30 min</td><td>24 min</td><td>5</td></tr><tr><td>7</td><td>8 → 9</td><td>train</td><td>08:37</td><td>30 min</td><td>16 min</td><td>4</td></tr><tr><td>8</td><td>0 → 7</td><td>walk</td><td>Now</td><td>None</td><td>5 min</td><td>0</td></tr><tr><td>9</td><td>7 → 0</td><td>walk</td><td>Now</td><td>None</td><td>5 min</td><td>0</td></tr><tr><td>10</td><td>3 → 8</td><td>walk</td><td>Now</td><td>None</td><td>5 min</td><td>0</td></tr><tr><td>11</td><td>8 → 3</td><td>walk</td><td>Now</td><td>None</td><td>5 min</td><td>0</td></tr><tr><td>12</td><td>6 → 9</td><td>walk</td><td>Now</td><td>None</td><td>5 min</td><td>0</td></tr><tr><td>13</td><td>9 → 6</td><td>walk</td><td>Now</td><td>None</td><td>5 min</td><td>0</td></tr></tbody></table>
+<p class="code-location"><strong>1. scripts/route_data.gd</strong> · Replace the complete <code>create_routes()</code> function:</p><pre><code>static func create_routes():
+	return [
+		leg(0, 1, &quot;horse&quot;, 486, 20, 10, 1),
+		leg(1, 2, &quot;horse&quot;, 498, 20, 14, 1),
+		leg(2, 3, &quot;horse&quot;, 514, 20, 10, 1),
+		leg(3, 4, &quot;horse&quot;, 526, 20, 14, 1),
+		leg(4, 5, &quot;horse&quot;, 542, 20, 10, 1),
+		leg(5, 6, &quot;horse&quot;, 554, 20, 10, 1),
+		leg(7, 8, &quot;train&quot;, 490, 30, 24, 5),
+		leg(8, 9, &quot;train&quot;, 517, 30, 16, 4),
+		leg(0, 7, &quot;walk&quot;, 0, 0, 5, 0),
+		leg(7, 0, &quot;walk&quot;, 0, 0, 5, 0),
+		leg(3, 8, &quot;walk&quot;, 0, 0, 5, 0),
+		leg(8, 3, &quot;walk&quot;, 0, 0, 5, 0),
+		leg(6, 9, &quot;walk&quot;, 0, 0, 5, 0),
+		leg(9, 6, &quot;walk&quot;, 0, 0, 5, 0),
+	]</code></pre>
+<p>With prompt choices, the all-horse route reaches the goal at <strong>09:24 for 6 tokens</strong>. The train route, with the two endpoint walks, reaches it at about <strong>08:58 for 9 tokens</strong>. Manual clicking can delay the final immediate walk slightly. The faster route now costs more.</p>
+<p>The scheduled horse legs include two minutes between arrival and onward departure. The trains have three minutes at Zehlendorf Station. Decision time is slow, but it still counts: a player can miss a departure if they wait too long.</p>
+<h3>Run two small experiments, not a large redesign</h3>
+<ol><li>Play the horse route and then the train route using the baseline. Record the arrival time and tokens remaining.</li>
+<li>Change <strong>one value</strong>, such as the second train’s fare from 4 to 5. Run that same route again. A total cost of 10 leaves no spare tokens; decide whether that feels fair.</li>
+<li>If you change a duration, check the following departure as well. Increasing a train leg from 24 to 28 minutes makes the 08:37 connection too early, so it is no longer a small visual change.</li>
+<li>Keep the version that produces a clear choice. Revert an experiment that creates an unaffordable final leg or an impossible transfer.</li></ol>
+<table><thead><tr><th>Run</th><th>Value changed</th><th>Arrival</th><th>Tokens left</th><th>Keep or revert, and why?</th></tr></thead><tbody>
+<tr><td>Horse baseline</td><td>None</td><td>________</td><td>________</td><td>________________</td></tr>
+<tr><td>Train baseline</td><td>None</td><td>________</td><td>________</td><td>________________</td></tr>
+<tr><td>Experiment</td><td>________</td><td>________</td><td>________</td><td>________________</td></tr>
+</tbody></table>
+<p>This is a developer play-test, not an audience study. Record only checks you actually carry out, in the form your centre allows for the final outcome. Do not add new pages to the locked supporting studies.</p>
+</section>
+
+<section id="verify"><h2>4:20–5:00 · Final checks and saving</h2>
+<table><thead><tr><th>Test</th><th>What should happen</th></tr></thead><tbody>
+<tr><td>Fresh launch</td><td>Instructions appear; clock stays at 08:00 until Start.</td></tr>
+<tr><td>Hover and selection</td><td>Hover clears when the pointer leaves; clicked selection persists. Neither spends money.</td></tr>
+<tr><td>One road and one rail leg</td><td>Marker, line and sprite share the traced path; or the stationary fallback is clear.</td></tr>
+<tr><td>Pause while waiting</td><td>No boarding or payment occurs during pause.</td></tr>
+<tr><td>Pause while travelling</td><td>Clock, position and vehicle frames freeze; Resume continues the same journey.</td></tr>
+<tr><td>Cancel waiting</td><td>Clicking the current stop cancels without spending tokens or rewinding time.</td></tr>
+<tr><td>Restart during travel</td><td>Start screen returns; time, wallet, location, selection and active route are reset.</td></tr>
+<tr><td>All-horse journey</td><td>It can finish within the budget; expected baseline 09:24, 4 tokens remaining.</td></tr>
+<tr><td>Train journey</td><td>It ends at the station first; the final walk reaches the goal. Expected baseline about 08:58, 1 token remaining.</td></tr>
+<tr><td>Late arrival</td><td>Reaching stop 6 after 09:30 says late. The game does not end merely because 09:30 passes elsewhere.</td></tr>
+<tr><td>Long station names</td><td>Button text, status and connection preview fit the sidebar without overlap.</td></tr>
+<tr><td>Saved version</td><td>After Save All and a fresh launch, the same scene, map and sprites appear.</td></tr>
+</tbody></table>
+<p>If your agreed submission includes a screen recording, leave time to show the opening instructions, a hover/click, a journey, Pause/Resume and the final result. Use the centre’s required format. Record your actual implementation; do not describe a skipped feature as finished.</p>
+<details><summary>Checks carried out on the teaching examples</summary><p>The examples were validated in a separate copy, not in your submitted project. The vehicle tests used placeholder frames to check behaviour; your actual sprite appearance still needs your visual check.</p><pre>Godot 4.4.1, checked in a separate copy of the supplied Day 1 project.
+
+PASS: all 8 phases parse and start successfully.
+PASS: 106 logic checks, including travel, fares, scheduling, pause and reset.
+PASS: guide snippets replay to the validated final functions.
+
+Last completed rendered check: 26 passed, 1 failed.
+Passed: hover, overlay click blocking, Start/Pause/Resume controls,
+button dimensions and option/connection spacing.
+The failure was the original instruction text overflowing its allocated height.
+The guide now removes two blank lines to shorten the body from 13 to 11 lines.
+That spacing revision has not had a completed render check. Check it in Godot.
+
+Vehicle behaviour was checked using placeholder frames. The actual permitted
+horse/train artwork and manually traced paths still need a visual check.
+The user&#x27;s original project was not edited.</pre></details>
+</section>
+
+<section id="quick"><h2>Short checklist for the session</h2>
+<ul><li>Keep <code>checkpoint_map.gd</code>, <code>create_routes()</code>, origin (0, 0), goal 6 and the current map transform.</li>
+<li>Correct stop names and make decorative controls ignore mouse input.</li>
+<li>Use separate hover and selection values.</li>
+<li>Use one curve for marker, highlight and vehicle. Stop tracing at 1:35.</li>
+<li>Style generated buttons in code; keep option text separate from connection text.</li>
+<li>Import only available permitted sprites. One clear icon is an acceptable time-saving fallback.</li>
+<li>Pause the clock, controls and sprite together. Restart reloads the scene.</li>
+<li>Show instructions before time starts; block map clicks while they are open.</li>
+<li>Make both main routes affordable and leave transfer slack.</li>
+<li>Reserve the last 40 minutes for a complete play-through and saving.</li></ul>
+<p>Use the code blocks to understand which function changes. Do not replace your working Day 1 project with the old eight-stop guide.</p>
+</section>
+
+<section id="references"><h2>References and scope</h2>
+<p>Technical references used to check the methods:</p><ul>
+<li><a href="https://docs.godotengine.org/en/4.4/classes/class_curve2d.html">Curve2D: path length and sampled positions</a></li>
+<li><a href="https://docs.godotengine.org/en/4.4/classes/class_path2d.html">Path2D and its Curve2D resource</a></li>
+<li><a href="https://docs.godotengine.org/en/4.4/tutorials/2d/2d_sprite_animation.html">SpriteFrames and sprite-sheet animation</a></li>
+<li><a href="https://docs.godotengine.org/en/4.4/classes/class_animatedsprite2d.html">AnimatedSprite2D play, pause and animation state</a></li>
+<li><a href="https://docs.godotengine.org/en/4.4/classes/class_styleboxflat.html">StyleBoxFlat rounded corners</a></li>
+<li><a href="https://docs.godotengine.org/en/4.4/classes/class_control.html">Control mouse filtering and layout</a></li>
+<li><a href="https://docs.godotengine.org/en/4.4/classes/class_scenetree.html#class-scenetree-method-reload-current-scene">SceneTree.reload_current_scene</a></li></ul>
+<p>The timetable suggestions are game-design experiments. Manual path tracing needs a visual check against your image; the path system cannot automatically recognise roads in a PNG. The guide does not restore the earlier prototype’s through-journey booking or independently moving service vehicles. It extends the adjacent-leg system you have already built.</p>
+</section>
+</main></body></html>
