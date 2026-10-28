@@ -1,0 +1,822 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Godot Day 1</title><style>*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:#172c31;background:#edf1f0;font:17px/1.65 "Segoe UI",Arial,sans-serif}nav{position:fixed;inset:0 auto 0 0;width:260px;padding:28px 20px;overflow:auto;background:#163e42;color:white}nav strong{display:block;font-size:20px;margin-bottom:18px}nav a{display:block;color:#e2f0ed;text-decoration:none;margin:0 0 11px;font-size:13px;line-height:1.4}nav a:hover{text-decoration:underline}main{max-width:1120px;margin-left:260px;padding:42px 48px 90px}section{padding:28px 34px;background:white;margin:0 0 24px;border-radius:9px;scroll-margin-top:16px}h1{font-size:36px;line-height:1.18;letter-spacing:-.7px;color:#102b31}h2{font-size:27px;line-height:1.25;margin-top:8px;color:#102b31}h3{font-size:21px;line-height:1.35;margin-top:30px}p{margin:14px 0}li{margin:8px 0}a{color:#156b70}table{width:100%;border-collapse:collapse;font-size:14px;line-height:1.45;margin:24px 0}th{text-align:left;background:#dceae7}td,th{padding:10px 12px;border-bottom:1px solid #d5dfdc;vertical-align:top}pre{background:#f0f4f3;padding:20px;border-radius:5px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;tab-size:4;font:13px/1.65 Consolas,"Courier New",monospace}code{font-family:Consolas,"Courier New",monospace}p code,li code,td code{font-size:.9em;background:#edf3f1;padding:1px 3px}.lead{font-size:21px;line-height:1.5}.memory,blockquote{background:#edf5f2;border-left:4px solid #317e79;padding:16px 22px;margin:24px 0}.memory{font-size:20px}.full-code{font-size:13px}figure{margin:30px 0}img{max-width:100%;height:auto;border:1px solid #dae4df}figcaption{font-size:14px;color:#4f6768}.top-note{font-size:13px;color:#4f6768}button.print{position:fixed;bottom:20px;left:20px;padding:10px 20px;border:0;background:#d4ece5;border-radius:5px;font-weight:bold;color:#173c40;cursor:pointer}@media(max-width:900px){nav{position:relative;width:auto;max-height:280px}main{margin:0;padding:20px}section{padding:22px}button.print{position:static;margin:20px}}@media print{@page{size:A4;margin:16mm}nav,button.print{display:none}body{background:white;font-size:10.5pt;line-height:1.45}main{margin:0;padding:0;max-width:none}section{padding:0;margin:0 0 24px;border-radius:0}h1{font-size:25pt}h2{font-size:17pt;break-after:avoid}h3{font-size:13pt;break-after:avoid}pre,.full-code{font-size:8pt;line-height:1.4;overflow:visible}table{font-size:9pt}tr{break-inside:avoid}figure{break-inside:avoid}a{color:#172c31}section[id^="code-"]{break-before:page}.memory{font-size:12pt}}</style></head><body><nav><strong>Godot Day 1</strong><a href="#day1-start">Day 1: build the playable game</a><a href="#between-sessions">Reading and working between the sessions</a><a href="#day1-schedule">Day 1 timetable: five hours</a><a href="#day1-code-order">What must exist before the Day 1 game can run</a><a href="#what-you-are-building">Understand the three scripts before writing them</a><a href="#project-setup">Make the empty project</a><a href="#instructions">Create the basic instruction screen on Day 1</a><a href="#data">Write the map and timetable data</a><a href="#draw-map">Draw the routes before spending time on geography</a><a href="#main-code">Learn the main script as small jobs</a><a href="#day1-checkpoint">Last 35 minutes: prove the core works, then save</a><a href="#code-route_data">Day 1 code: route_data.gd</a><a href="#code-map_view">Day 1 code: map_view.gd</a><a href="#code-main_day1">Day 1 code: complete controller</a><a href="#troubleshooting">If something breaks, check this before rewriting it</a><a href="#documentation">Documentation used for the code</a></nav><main><p class="top-note">Godot 4.4.1 · Five-hour session · Practice before the exam</p><section id="day1-start"><h1>Day 1: build the playable game</h1>
+<p class="lead">Five hours to build the stops, choices, clock, fares and movement. Finish with a game that can reach the destination using a gold marker.</p>
+<p>This part includes its own complete Day 1 scripts and uses the original prototype's interface positions. It does not rely on functions hidden in the Day 2 guide. Learn the logic before the exam, using only the reference material your centre permits during it.</p>
+<p>The teaching controller asks you to choose each leg separately and leaves out independently moving background vehicles. The original map and interface layout are kept, so you can use your supporting-study screenshots to check placement.</p>
+<div class="memory">Data → Draw → Select → Schedule → Wait → Pay → Move → Arrive</div>
+<p><a href="Godot_Day_2_guide.html">Open Part 2</a> · <a href="Godot_exam_practice_guide.html">Open the full reference</a></p></section><section id="between-sessions"><h2>Reading and working between the sessions</h2>
+<p>Prepare both parts before the first exam session. The split describes when to do the work inside the two supervised sessions; it does not establish permission to continue preparation at home after Day 1.</p>
+<p>Cambridge says the exam room must remain secure overnight, supporting work cannot be taken home, and new or additional supporting work cannot be brought in after the test starts. <a href="https://help.cambridgeinternational.org/hc/en-gb/articles/37439377928978-Component-2-Externally-Set-Assignment-What-happens-between-the-timed-test-sessions">Official guidance on the gap between sessions</a>.</p>
+<p>The published wording does not explicitly settle reading a separate tutorial at home. Ask your exams officer whether that is permitted in your arrangement. Until they confirm it, plan to read both parts before Day 1. Do not take the exam project home, access it remotely, amend the supporting studies or create replacement code/assets to bring back.</p>
+<p>The candidate work must remain under the centre's secure arrangements. Save your checkpoint and any permitted development notes inside those arrangements before leaving. <a href="https://www.cambridgeinternational.org/Images/693611-2026-2028-guide-to-administering.pdf">Administering guide, p.5</a>.</p>
+</section><section id="day1-schedule"><h2>Day 1 timetable: five hours</h2>
+<p>The target is a complete playable game using a moving gold ring, with the original layout already in place. Train and horse pictures and geographic polygons can wait until Day 2. A working checkpoint gives Day 2 a stable starting point.</p>
+<table><thead><tr><th>Session time</th><th>Work</th><th>Checkpoint</th></tr></thead><tbody>
+<tr><td>0:00–0:45</td><td>Project settings, full UI tree, original panel/label positions and centered instruction screen.</td><td>The window opens at 1280 × 800; all node names and UI positions match the reference.</td></tr>
+<tr><td>0:45–1:35</td><td>Write route_data.gd and map_view.gd. Draw stops, routes and labels.</td><td>Eight stops, separate road/rail symbols and walks are visible.</td></tr>
+<tr><td>1:35–2:25</td><td>Write destination selection, journey buttons and displayed options.</td><td>Potsdam offers the horse to Glienicke and a walk to the station.</td></tr>
+<tr><td>2:25–3:45</td><td>Write schedules, clock, waiting, boarding payment and arrival.</td><td>A walk and a train leg finish at the right times and charge correctly.</td></tr>
+<tr><td>3:45–4:25</td><td>Finish gold-ring movement, deadline result, Pause, Help, Restart and Cancel.</td><td>All controller functions exist and the whole route can be played.</td></tr>
+<tr><td>4:25–4:45</td><td>Run the core checks. Fix errors rather than adding decoration.</td><td>First train journey reaches the gate around 08:58 for nine tokens.</td></tr>
+<tr><td>4:45–5:00</td><td>Save All, verify the saved main scene, record the next task in permitted notes.</td><td>A working checkpoint is saved in the centre's approved location.</td></tr>
+</tbody></table>
+<p>The times are planning targets. If you run behind, leave scenery and sprite animation for Day 2. Do not finish Day 1 with half of main.gd missing just to add a forest.</p>
+</section><section id="day1-code-order"><h2>What must exist before the Day 1 game can run</h2>
+<p>Use the full scene tree below, except that <strong>Passenger and geographic Polygon2D nodes are not needed yet</strong>. Keep Background, MapPanel and SidePanel, all interface Labels, Scroll/Options, Progress and all buttons. The controller already needs the Start button at <code>UI/Interface/Instructions/Center/Panel/Content/Bottom/Start</code> on Day 1.</p>
+<ol><li>Create all three script files. route_data.gd has no attached node; map_view.gd attaches to Map; the Day 1 controller attaches to Main.</li><li>Write all of route_data.gd, then all of map_view.gd. For a static map check, Main can temporarily contain only <code>extends Node2D</code>; hide Instructions in the Inspector while doing that check.</li><li>Write the constants, variables and @onready references in the Day 1 main script.</li><li>Write the small time helpers, selection/button functions, scheduling and state changes, then update_display().</li><li>Write the pause/help/restart/keyboard functions. Add the complete _ready() and _process() connections once their targets exist.</li><li>Save and test the complete controller. Empty placeholders are not the finished Day 1 checkpoint.</li></ol>
+<p>The Day 1 controller is supplied below as <strong>main_day1.gd</strong> in the practice pack. When writing your own project, save its contents as <strong>res://scripts/main.gd</strong> and attach that file to Main. Do not attach both controller scripts. It has no Passenger reference, so an absent AnimatedSprite2D cannot break it.</p>
+<p>Day 1 still moves the gold ring along each route and fades the active line. “No vehicle frames yet” does not mean “no movement”. The Day 2 change adds the vehicle image above that same ring.</p></section><section id="what-you-are-building">
+<h2>Understand the three scripts before writing them</h2>
+<table><thead><tr><th>File</th><th>Its job</th><th>What belongs somewhere else</th></tr></thead><tbody>
+<tr><td><code>route_data.gd</code></td><td>Stores stop names, coordinates, routes, times and prices.</td><td>It does not draw the map or read clicks.</td></tr>
+<tr><td><code>map_view.gd</code></td><td>Draws routes, stop symbols and the player ring; detects a clicked stop; finds positions along a route.</td><td>It does not decide when a service leaves or take money.</td></tr>
+<tr><td><code>main.gd</code></td><td>Runs the clock, creates journey buttons, changes the game state, charges fares and updates the interface and moving gold ring. Day 2 adds the vehicle sprite.</td><td>Stop coordinates and prices stay in the data file.</td></tr>
+</tbody></table>
+<p>This separation is useful when something goes wrong. A wrongly placed station is probably a data or map issue. An incorrect departure is probably in the timetable calculation. A missing button is usually in the selection or interface code.</p>
+<h3>A few Godot terms you need to know</h3>
+<table><thead><tr><th>Term</th><th>Meaning in this game</th></tr></thead><tbody>
+<tr><td>Node</td><td>One object in the scene tree. A Label displays text; a Button receives a click; an AnimatedSprite2D displays frames.</td></tr>
+<tr><td>Scene</td><td>A saved tree of nodes. The whole game can use one scene called <code>main.tscn</code>.</td></tr>
+<tr><td><code>extends Node2D</code></td><td>Says the script controls a two-dimensional node. The data script uses <code>RefCounted</code> because it is a collection of data and helper functions, not an object drawn on screen.</td></tr>
+<tr><td><code>Vector2(x, y)</code></td><td>A pair of coordinates. In the map, x grows to the right and y grows downwards.</td></tr>
+<tr><td>Dictionary</td><td>A group of named values, such as <code>{"mode": "train", "cost": 5}</code>. <code>route.cost</code> reads its cost.</td></tr>
+<tr><td>Array</td><td>An ordered list. Indexing starts at zero, so the first stop is stop 0.</td></tr>
+<tr><td><code>preload(...)</code></td><td>Loads a resource when Godot loads the script. Here it gives the script access to the data file.</td></tr>
+<tr><td><code>@onready</code></td><td>Waits until the scene's children exist before looking them up. <code>$UI/Interface/Clock</code> means “find the Clock node at this exact path”.</td></tr>
+<tr><td>Signal</td><td>An announcement that something happened. The map emits <code>stop_clicked</code>; the main script decides how to respond.</td></tr>
+<tr><td><code>bind(i)</code></td><td>Adds an argument to a connected function. Every generated button uses the same <code>choose_route</code> function, but passes its own route index.</td></tr>
+<tr><td><code>delta</code></td><td>The real seconds since the previous frame. Multiplying by delta prevents a fast computer from making game time run faster.</td></tr>
+<tr><td><code>queue_redraw()</code></td><td>Asks Godot to call the map's <code>_draw()</code> function again. Changing a drawing variable by itself does not redraw it.</td></tr>
+<tr><td><code>queue_free()</code></td><td>Removes a node safely at the end of the frame. Here it removes old journey buttons.</td></tr>
+</tbody></table>
+</section><section id="project-setup">
+<h2>Make the empty project</h2>
+<ol>
+<li>Open Godot 4.4. In Project Manager, choose <strong>Create</strong>, give the project a clear name, and choose an empty folder.</li>
+<li>Choose the <strong>Compatibility</strong> renderer. This is sufficient for a flat 2D map.</li>
+<li>Open <strong>Project → Project Settings → Display → Window</strong>. Set Viewport Width to <strong>1280</strong> and Viewport Height to <strong>800</strong>. Use the same window override size if those settings are shown.</li>
+<li>Set Stretch Mode to <strong>canvas_items</strong>. This keeps the canvas coordinates used in this guide while scaling the display with the window.</li>
+<li>Create folders called <code>scripts</code> and <code>assets</code> in the FileSystem dock.</li>
+<li>If your teacher permits the prepared artwork, have it ready for Day 2 in <code>assets</code> and let Godot import it. In the supplied rehearsal project the path is <code>res://assets/transport_frames.png</code>. Keep your chosen path consistent when assigning textures.</li>
+<li>Create a new <strong>2D Scene</strong>. Rename its root <code>Main</code> and save it as <code>main.tscn</code> in the project root. Attach <code>scripts/main.gd</code> to Main.</li>
+<li>Press F5 and choose this scene as the main scene when asked. F5 runs the project; F6 runs whichever scene is currently open.</li>
+</ol>
+<p>Godot node names and file paths must match the code exactly. <code>Wallet</code> and <code>wallet</code> are not the same node name.</p>
+<h3>Create this scene tree</h3>
+<pre><code>Main                         Node2D, main.gd
+├── Background               ColorRect
+├── MapPanel                 Panel
+├── SidePanel                Panel
+├── Map                      Node2D, map_view.gd
+│   └── (labels created by map_view.gd)
+└── UI                       CanvasLayer
+    └── Interface            Control
+        ├── Title            Label
+        ├── Subtitle         Label
+        ├── Clock            Label
+        ├── Wallet           Label
+        ├── Mode             Label
+        ├── GoalTitle        Label
+        ├── GoalDetail       Label
+        ├── Location         Label
+        ├── Detail           Label
+        ├── Status           Label
+        ├── Footer           Label
+        ├── Scroll           ScrollContainer
+        │   └── Options      VBoxContainer
+        ├── Pause            Button
+        ├── Restart          Button
+        ├── Help             Button
+        ├── ShowAll          Button
+        ├── Progress         ProgressBar
+        ├── CancelWait       Button
+        └── Instructions     Control
+            ├── Shade        ColorRect
+            └── Center       CenterContainer
+                └── Panel    PanelContainer
+                    └── Content  VBoxContainer
+                        ├── Title, Subtitle, Goal, Budget  Label nodes
+                        ├── Steps, Symbols, Timing, Keys   Label nodes
+                        └── Bottom   HBoxContainer
+                            ├── Note   Label
+                            └── Start  Button</code></pre>
+<p>Add children by selecting the intended parent and pressing Ctrl+A or using Add Child Node. The Map node's position is <strong>(25, 126)</strong>. Leave its scale at <strong>(1, 1)</strong>. All stop positions and route points are local to Map, so you do not add 25 and 126 to the coordinates in the data file.</p>
+<p>The map's design area is <strong>860 × 550</strong>. Its lower-right corner is (885, 676) in the 1280 × 800 window. MapPanel sits behind it at (24, 111), size (864, 572). SidePanel is at (910, 111), size (346, 666). Keep these positions fixed so the screenshots in the supporting studies remain a useful reference.</p>
+<h3>Place the interface controls</h3>
+<p>These values come from your original <code>map_stage.gd</code>. The rebuild uses saved scene nodes for the same layout instead of creating every control in code. Place the root background and panels before Map in the scene tree. Set Background Z Index to <strong>−10</strong> and MapPanel/SidePanel Z Index to <strong>−9</strong>. Geography uses −2, so it stays above the white panels and below the routes.</p>
+<p>Make Interface cover the 1280 × 800 viewport. Use top-left anchors and the values below for its children. In Godot 4, the exact controls appear under Layout and Transform. If a Control is inside a Container, the Container determines its layout; do not put these fixed-position controls inside a VBoxContainer by accident.</p>
+<table><thead><tr><th>Node</th><th>Position x, y</th><th>Size w, h</th><th>Font px</th><th>Text / setting</th></tr></thead><tbody>
+<tr><td>Background</td><td>0, 0</td><td>1280, 800</td><td>—</td><td>Colour #f4f5ef</td></tr>
+<tr><td>MapPanel</td><td>24, 111</td><td>864, 572</td><td>—</td><td>White; corner radius 10</td></tr>
+<tr><td>SidePanel</td><td>910, 111</td><td>346, 666</td><td>—</td><td>White; corner radius 10</td></tr>
+<tr><td>Title</td><td>26, 18</td><td>520, 40</td><td>29</td><td>ROUTES THROUGH TIME</td></tr>
+<tr><td>Subtitle</td><td>28, 60</td><td>600, 30</td><td>17</td><td>Stage 01   /   Potsdam to Berlin   /   late 1838</td></tr>
+<tr><td>Clock</td><td>675, 15</td><td>180, 45</td><td>34</td><td>08:00</td></tr>
+<tr><td>Wallet</td><td>860, 20</td><td>170, 40</td><td>25</td><td>10 tokens</td></tr>
+<tr><td>Mode</td><td>677, 61</td><td>300, 25</td><td>14</td><td>Time is passing</td></tr>
+<tr><td>GoalTitle</td><td>930, 128</td><td>306, 24</td><td>16</td><td>REACH POTSDAMER TOR</td></tr>
+<tr><td>GoalDetail</td><td>930, 154</td><td>306, 30</td><td>17</td><td>By 09:30. Budget: 10 tokens.</td></tr>
+<tr><td>Location</td><td>930, 198</td><td>306, 32</td><td>23</td><td>Potsdam</td></tr>
+<tr><td>Detail</td><td>930, 234</td><td>306, 52</td><td>15</td><td>Choose below, or click a map stop.</td></tr>
+<tr><td>Scroll</td><td>925, 295</td><td>318, 344</td><td>—</td><td>Horizontal scroll disabled</td></tr>
+<tr><td>ShowAll</td><td>930, 648</td><td>306, 38</td><td>16</td><td>Show all journeys</td></tr>
+<tr><td>Progress</td><td>930, 697</td><td>306, 12</td><td>—</td><td>Min 0; max 100; Show Percentage off</td></tr>
+<tr><td>CancelWait</td><td>930, 723</td><td>306, 37</td><td>16</td><td>Cancel waiting</td></tr>
+<tr><td>Status</td><td>40, 700</td><td>830, 34</td><td>19</td><td>First step: click Potsdam Station, the square near your gold ring.</td></tr>
+<tr><td>Footer</td><td>40, 736</td><td>830, 48</td><td>14</td><td>08:00  Journey begins at Potsdam. Reach Potsdamer Tor by 09:30.<br>Timetable and fares are game values. Space pauses. R restarts.</td></tr>
+<tr><td>Pause</td><td>1042, 25</td><td>92, 43</td><td>16</td><td>Pause</td></tr>
+<tr><td>Restart</td><td>1144, 25</td><td>110, 43</td><td>16</td><td>Restart</td></tr>
+<tr><td>Help</td><td>490, 25</td><td>160, 43</td><td>16</td><td>How to play</td></tr>
+</tbody></table>
+<p><strong>Position and size are not the four edge offsets.</strong> With top-left anchors, Clock at (675, 15) with size (180, 45) has left/top/right/bottom offsets (675, 15, 855, 60). Right is x + width; bottom is y + height. Use the table as the intended rectangle. Godot may make a control taller when its font needs more room, so check both the entered values and the running result.</p>
+<p><strong>Verified font-size effect:</strong> the original Clock requests a height of 45, but Godot 4.4.1 expands it to <strong>47 pixels</strong> because its 34 px font needs that much height. Keep the original position (675, 15), width 180 and font 34. Seeing size (180, 47) in the Inspector is expected; do not shrink the font to force the height back to 45.</p>
+<p>Options is a child of Scroll, not a fixed-position sibling. Set its Horizontal Size Flags to <strong>Expand + Fill</strong> and its Theme Overrides → Constants → Separation to <strong>8</strong>. Do not assign it the old position or a manual width; the ScrollContainer lays it out. Generated journey buttons have minimum size (304, 60), a 14 px font and left alignment.</p>
+<p>Use #213c43 for normal interface text and #24757a for Clock and GoalTitle. Subtitle, Mode and Detail use #657a7c; Footer uses #627777. Enable Word Smart wrapping for Detail and Footer. The first-step hint is displayed in <strong>Status</strong> below the map; there is no separate Hint node.</p>
+<p>Set a Theme on Interface with Default Font Size 16. For Button, use StyleBoxFlat backgrounds: normal/focus #e9f1ee, hover/pressed/hover_pressed #24757a, disabled #eeeeea, corner radius 10 and left/right content margins 12. Set normal font #213c43, hover/pressed font white, disabled font #888e88. ProgressBar uses #24757a fill and #e9f1ee background. MapPanel and SidePanel each use their own white StyleBoxFlat with corner radius 10 and left/right content margins 12. These settings reproduce the original interface colours.</p>
+<p>Set <strong>Mouse → Filter = Ignore</strong> on Interface, decorative Labels and other non-interactive decoration. Set <strong>Focus → Mode = None</strong> on Pause, Restart, Help, ShowAll and CancelWait. The script gives generated journey buttons the same setting. This keeps Space available for pausing rather than activating whichever game button was last clicked. The instruction screen's <strong>Start button is the exception: keep Focus Mode = All</strong>, so it can receive focus and Enter.</p>
+<p>Do not connect button signals in the editor as well as in the script. The supplied <code>_ready()</code> function makes those connections. Connecting them twice can cause an action to happen twice.</p>
+</section><section id="instructions">
+<h2>Create the basic instruction screen on Day 1</h2>
+<p>This screen is part of your response to the feedback from the five players. It should explain the objective before the clock starts. Do not leave it until the final few minutes.</p>
+<ol>
+<li>Make Instructions the <strong>last child of Interface</strong>, so it draws over the other controls.</li>
+<li>Instructions is a <strong>Control</strong>, with Full Rect anchors over Interface and Z Index 100. Set Mouse Filter to <strong>Stop</strong>. Add a ColorRect named Shade, Full Rect, colour RGBA (0.07, 0.15, 0.17, 0.82), Mouse Filter Ignore.</li>
+<li>Add a <strong>CenterContainer</strong> named Center, Full Rect, Mouse Filter Ignore. Inside it create a <strong>PanelContainer</strong> named Panel. Give Panel Custom Minimum Size x = <strong>940</strong>; let the containers determine its height and position.</li>
+<li>For Panel, add Theme Overrides → Styles → Panel → New StyleBoxFlat. Set background #f4f5ef; all corner radii 14; content margins left/right 36 and top/bottom 28.</li>
+<li>Inside Panel, add a <strong>VBoxContainer</strong> named Content. Set Separation to <strong>14</strong>. Add the eight Label nodes in the table below in order. Keep the explicit line breaks; their text sets the required height. Do not manually position container children.</li>
+<li>After Keys, add a <strong>HBoxContainer</strong> named Bottom, Separation <strong>24</strong>. Add a Label named Note and a Button named Start. Set Note Horizontal Size Flags to Expand + Fill and Vertical Size Flags to Shrink Center. Start uses minimum size (220, 54) and font size 22.</li>
+<li>For Start, use a teal #24757a StyleBoxFlat with corner radius 8 and white text. Its focus style has a 3 px gold #f1b62c border. Keep <strong>Focus Mode = All</strong> and set text to <strong>Start journey</strong>. The controller uses the path <code>$UI/Interface/Instructions/Center/Panel/Content/Bottom/Start</code>.</li>
+</ol>
+<table><thead><tr><th>Label</th><th>Font px / colour</th><th>Text; preserve the shown line breaks</th></tr></thead><tbody>
+<tr><td>Title</td><td>36 / #213c43</td><td>YOUR FIRST JOURNEY</td></tr>
+<tr><td>Subtitle</td><td>18 / #627777</td><td>Potsdam to Berlin / late 1838</td></tr>
+<tr><td>Goal</td><td>28 / #24757a</td><td>Reach Potsdamer Tor by 09:30</td></tr>
+<tr><td>Budget</td><td>21 / #213c43</td><td>You start in Potsdam with 10 tokens to spend on travel.</td></tr>
+<tr><td>Steps</td><td>21 / #213c43</td><td>1. Find the gold ring. It shows where you are.<br>2. Click a stop, then choose a journey in the panel on the right.<br>3. Check the departure (Dep), arrival (Arr) and token cost.</td></tr>
+<tr><td>Symbols</td><td>20 / #213c43</td><td>Circles are horse stops. Squares are train stations.<br>Walk between nearby stops to change transport. Walking takes time.</td></tr>
+<tr><td>Timing</td><td>20 / #213c43</td><td>The clock runs while you wait and speeds up after you choose a journey.<br>A train ends at Potsdamer Bahnhof. Walk to Potsdamer Tor to finish.</td></tr>
+<tr><td>Keys</td><td>18 / #627777</td><td>Space pauses the game. R restarts it. How to play opens this screen again.</td></tr>
+<tr><td>Bottom/Note</td><td>18 / #24757a</td><td>The clock is stopped while you read this.</td></tr>
+</tbody></table>
+<p>This recreates the instruction screen from your prototype. Do not replace the centered container layout with fixed positions for each sentence. All instruction Labels use Mouse Filter Ignore. The game remains blocked by the full-screen Instructions control.</p>
+<p>At 1280 × 800 with the original font and text, the panel resolves to <strong>(170, 96)</strong>, size <strong>(940, 607)</strong>. These are measured results for comparison with the screenshot, not values to force onto container-managed children.</p>
+<p>The script does not pause the entire SceneTree. It simply refuses to advance the clock while Instructions is visible. This also preserves an existing pause setting when Help is closed:</p>
+<pre><code>func _process(delta: float) -&gt; void:
+    if not paused and not instructions.visible and state != State.FINISHED:
+        tick_clock(delta)
+    update_display()</code></pre>
+<p><strong>Checkpoint:</strong> leave the opening screen visible for ten real seconds. The game must still show 08:00. Click where a station is hidden behind the panel; it must not select that station.</p>
+</section><section id="data">
+<h2>Write the map and timetable data</h2>
+<p>Create <code>scripts/route_data.gd</code> with <code>extends RefCounted</code>. It has no attached scene node. Main and Map load it with:</p>
+<pre><code>const Data = preload("res://scripts/route_data.gd")</code></pre>
+<p>Every stop is a dictionary. Keep its journey name, map label, position and label offset in this one place. The original map shortens Glienicker Bridge to “Glienicke” and uses lowercase “station” in two map labels. These deliberate display forms are retained; Potsdamer Bahnhof stays identical in both places.</p>
+<pre><code>{"name": "Potsdamer Bahnhof", "pos": Vector2(815, 195),
+ "rail": true, "label": "Potsdamer Bahnhof", "label_offset": Vector2(-164, 5)}</code></pre>
+<p><code>pos</code> is the centre of the stop. <code>label_offset</code> moves only the text away from the symbol. A negative x offset places the label to the left; a negative y offset places it above.</p>
+<table><thead><tr><th>Index</th><th>Journey name / map label</th><th>Stop position</th><th>Label offset</th><th>Symbol</th></tr></thead><tbody>
+<tr><td>0</td><td>Potsdam</td><td>70, 410</td><td>−48, −58</td><td>Circle</td></tr>
+<tr><td>1</td><td>Glienicker Bridge / Glienicke</td><td>210, 370</td><td>−25, 19</td><td>Circle</td></tr>
+<tr><td>2</td><td>Zehlendorf</td><td>535, 315</td><td>−44, −58</td><td>Circle</td></tr>
+<tr><td>3</td><td>Steglitz</td><td>665, 260</td><td>−24, 18</td><td>Circle</td></tr>
+<tr><td>4</td><td>Potsdamer Tor</td><td>795, 130</td><td>−151, −45</td><td>Circle; goal</td></tr>
+<tr><td>5</td><td>Potsdam Station / Potsdam station</td><td>95, 460</td><td>17, 1</td><td>Square</td></tr>
+<tr><td>6</td><td>Zehlendorf Station / Zehlendorf station</td><td>550, 380</td><td>−15, 22</td><td>Square</td></tr>
+<tr><td>7</td><td>Potsdamer Bahnhof</td><td>815, 195</td><td>−164, 5</td><td>Square</td></tr>
+</tbody></table>
+<p>Each stop label uses font size <strong>16</strong>, colour #253b43 and a white outline of <strong>5</strong>. Its local position is stop position + label offset. For example, Glienicke is at (185, 389) inside Map, which appears at (210, 515) in the game window after Map's (25, 126) offset.</p>
+<h3>Use minutes after midnight</h3>
+<p>The game stores time as one number, not a string such as “08:37”. This makes addition and comparison easy:</p>
+<ul><li>08:00 = 8 × 60 = <strong>480</strong>.</li><li>08:06 = 480 + 6 = <strong>486</strong>.</li><li>08:37 = 480 + 37 = <strong>517</strong>.</li><li>09:30 = 9 × 60 + 30 = <strong>570</strong>.</li></ul>
+<p>The decimal part represents a fraction of a minute. A clock value of 480.5 is halfway between 08:00 and 08:01. The display rounds down to a whole minute, but scheduling uses the more precise number.</p>
+<h3>The routes to enter</h3>
+<p>A route dictionary contains <code>from</code>, <code>to</code>, <code>mode</code>, <code>first</code>, <code>interval</code>, <code>duration</code>, <code>cost</code> and <code>points</code>. The first two values are stop indices. Points are the route's start, bends and end.</p>
+<table><thead><tr><th>Route</th><th>Mode</th><th>First</th><th>Every</th><th>Duration</th><th>Cost</th></tr></thead><tbody>
+<tr><td>0 → 1</td><td>horse</td><td>486 / 08:06</td><td>20 min</td><td>10 min</td><td>1</td></tr>
+<tr><td>1 → 2</td><td>horse</td><td>498 / 08:18</td><td>20 min</td><td>22 min</td><td>2</td></tr>
+<tr><td>2 → 3</td><td>horse</td><td>522 / 08:42</td><td>20 min</td><td>18 min</td><td>1</td></tr>
+<tr><td>3 → 4</td><td>horse</td><td>542 / 09:02</td><td>20 min</td><td>22 min</td><td>2</td></tr>
+<tr><td>5 → 6</td><td>train</td><td>490 / 08:10</td><td>30 min</td><td>24 min</td><td>5</td></tr>
+<tr><td>6 → 7</td><td>train</td><td>517 / 08:37</td><td>30 min</td><td>16 min</td><td>4</td></tr>
+<tr><td>0 ↔ 5</td><td>walk</td><td>Now</td><td>None</td><td>5 min</td><td>0</td></tr>
+<tr><td>2 ↔ 6</td><td>walk</td><td>Now</td><td>None</td><td>4 min</td><td>0</td></tr>
+<tr><td>7 ↔ 4</td><td>walk</td><td>Now</td><td>None</td><td>5 min</td><td>0</td></tr>
+</tbody></table>
+<p>The two-way arrows need two route dictionaries. A paid connection only runs towards Berlin in this version.</p>
+<p>The departure at a later stop is offset from the start of the same service. For example, the 08:10 train takes 24 minutes to reach Zehlendorf Station at 08:34. Its three-minute stop means it leaves there at 08:37, which is 517. The next run leaves at 09:07. These offsets already contain the stops between legs, so do not add another three minutes to the 16-minute second train leg.</p>
+<p>The helper <code>leg()</code> builds the points array from the two stops and any bend points. For the first connection:</p>
+<pre><code>leg(0, 1, "horse", 486, 20, 10, 1,
+    PackedVector2Array([Vector2(125, 412), Vector2(165, 393)]))</code></pre>
+<p>Read that aloud as: “from zero to one, by horse, first at 486, every 20 minutes, ten minutes of travel, one token, with these two bends”. That sentence is easier to remember than the punctuation alone.</p>
+</section><section id="draw-map">
+<h2>Draw the routes before spending time on geography</h2>
+<p>Attach <code>map_view.gd</code> to Map. It loads the data, creates the stop labels in <code>_ready()</code>, and uses <code>_draw()</code> for lines and symbols. The complete file is in the code appendix.</p>
+<ol>
+<li>Loop through the routes. Draw a thick white line first, then a thinner red horse line or dark train line. The white underneath keeps it readable over coloured land.</li>
+<li>Draw walks as short dark dashes. There are two route records for each walk, but only draw it when <code>route.from &lt; route.to</code>. That avoids painting the same dashed link twice.</li>
+<li>Loop through the stops. Draw a white-filled red circle for a road stop, or a white-filled dark square for a rail station.</li>
+<li>Draw the selected stop with a teal outline and the passenger with a larger gold ring.</li>
+<li>Add the text labels using the stop position plus its label offset. Give them a white outline so they remain readable over water and forest.</li>
+</ol>
+<p>A stop has a visible radius of about 11 pixels, but its click target has a radius of 22 pixels. The small symbol can stay neat while being easier to click.</p>
+<h3>Clicks must use the map's coordinates</h3>
+<pre><code>var mouse: Vector2 = get_global_transform_with_canvas().affine_inverse() * event.position
+for index in range(Data.STOPS.size()):
+    if mouse.distance_to(Data.STOPS[index].pos) &lt;= 22:
+        stop_clicked.emit(index)</code></pre>
+<p>The transform converts the mouse event's viewport position into Map's local coordinates, as the original prototype does. The inverse accounts for Map's position and scale. Now the distance check compares coordinates in the same space. Comparing the raw event position directly with a stop position would shift the hit areas by (25, 126).</p>
+<p>The full function checks that input is enabled and the event is a pressed left mouse button. Main connects the signal to <code>select_stop</code>. You can temporarily connect it to a small function that prints the index while you build the map, then remove that temporary connection.</p>
+<h3>Use the same path for the line and passenger</h3>
+<p>Map creates one Curve2D for each route from its points. There are no curved handles, so the visible bends remain the simple straight segments of the map. Sampling by path length keeps the passenger moving steadily through them:</p>
+<pre><code>func position_on_route(index: int, fraction: float) -&gt; Vector2:
+    var curve: Curve2D = curves[index]
+    return curve.sample_baked(curve.get_baked_length() * clampf(fraction, 0.0, 1.0))</code></pre>
+<p>Fraction zero means the start, 0.5 means halfway along the path's length, and one means the end. Do not move directly between the two station coordinates once you have added bends, or the vehicle will cut across the map.</p>
+<h3>Keep the original map captions</h3>
+<p>The map script creates these labels as children of Map. These are local positions, not window positions. They need Mouse Filter Ignore. Only the eight stop labels have the white outline described above.</p>
+<table><thead><tr><th>Text</th><th>Position</th><th>Font px</th><th>Colour</th></tr></thead><tbody>
+<tr><td>BERLIN</td><td>739, 25</td><td>22</td><td>#233a42</td></tr>
+<tr><td>Sacrower<br>See</td><td>246, 86</td><td>13</td><td>#34809b</td></tr>
+<tr><td>Havel</td><td>473, 213</td><td>16</td><td>#ffffff</td></tr>
+<tr><td>SCHEMATIC MAP  /  late 1838</td><td>14, 12</td><td>13</td><td>#627777</td></tr>
+<tr><td>Road stops</td><td>36, 515</td><td>14</td><td>#d84535</td></tr>
+<tr><td>Railway stations</td><td>187, 515</td><td>14</td><td>#233a42</td></tr>
+<tr><td>- -  Walk</td><td>354, 515</td><td>14</td><td>#233a42</td></tr>
+<tr><td>Gold ring = you</td><td>490, 515</td><td>14</td><td>#916208</td></tr>
+</tbody></table>
+<p>Leave river and forest shapes for Day 2. Plain lines on a pale background are enough to test the entire game today.</p></section><section id="main-code">
+<h2>Learn the main script as small jobs</h2>
+<p>Use the full script in the appendix as the reference. The explanations here tell you what to write in each group and how to check it. When you build it a piece at a time, Godot will complain if a function is called before you have written that function anywhere in the script. You can temporarily give a planned function a body containing <code>pass</code>, then replace it with the real code. Do not leave those placeholders in the finished version.</p>
+<h3>A. Remember what the game needs to store</h3>
+<pre><code>enum State { READY, WAITING, TRAVELLING, FINISHED }
+const START_TIME = 480.0
+const DEADLINE = 570.0
+const GOAL = 4</code></pre>
+<p>READY means the player can choose. WAITING means a service has been reserved but has not departed. TRAVELLING means the passenger is on a route. FINISHED means the player reached the goal. The introduction is handled by whether the instruction panel is visible; it does not need another state.</p>
+<table><thead><tr><th>Variable</th><th>What to remember</th></tr></thead><tbody>
+<tr><td><code>clock</code></td><td>Current game time in minutes. Starts at 480.</td></tr>
+<tr><td><code>wallet</code></td><td>Tokens remaining. Starts at 10.</td></tr>
+<tr><td><code>current_stop</code></td><td>The stop the player has actually reached. Starts at 0.</td></tr>
+<tr><td><code>selected_stop</code></td><td>A destination being inspected. −1 means show all available journeys.</td></tr>
+<tr><td><code>route_index</code></td><td>The selected connection in the routes array. −1 means no active connection.</td></tr>
+<tr><td><code>departure</code>, <code>arrival</code></td><td>Fixed times for the reserved trip. Do not keep recalculating them after the journey has been chosen.</td></tr>
+<tr><td><code>paused</code></td><td>Whether the player has pressed Pause.</td></tr>
+<tr><td><code>first_step</code></td><td>Whether the initial “click Potsdam Station” hint should still appear.</td></tr>
+<tr><td><code>has_started</code></td><td>Whether the player has closed the first introduction. Changes its button from Start journey to Back to game.</td></tr>
+<tr><td><code>result_text</code></td><td>The outcome shown when the destination is reached.</td></tr>
+<tr><td><code>last_arrival</code></td><td>Footer's current journey-history message. Initially “08:00  Journey begins at Potsdam. Reach Potsdamer Tor by 09:30.”; each arrival replaces it with that time and stop.</td></tr>
+</tbody></table>
+<p>Then write the <code>@onready</code> references. Most “null instance” errors at this point mean a node is missing, misspelled or under the wrong parent.</p>
+<h3>B. Connect the scene in _ready()</h3>
+<p>Connect Map's stop signal to <code>select_stop</code>. Connect the buttons to their matching functions, show the instructions, build the initial journey buttons and update the display. There is no need to make the journey buttons by hand.</p>
+<pre><code>map.stop_clicked.connect(select_stop)
+$UI/Interface/ShowAll.pressed.connect(select_stop.bind(-1))
+pause_button.pressed.connect(toggle_pause)</code></pre>
+<p>ShowAll passes −1 because that is the value used for “no destination filter”.</p>
+<h3>C. Find the next departure</h3>
+<pre><code>func next_departure(route: Dictionary, at_time: float = -1.0) -&gt; float:
+    var now = clock if at_time &lt; 0.0 else at_time
+    if route.mode == "walk":
+        return now
+    var runs = maxi(0, ceili((now - route.first) / route.interval))
+    return route.first + runs * route.interval</code></pre>
+<p>The calculation asks how many service intervals are needed to reach a departure that has not already passed. <code>ceili</code> rounds upwards. <code>maxi(0, ...)</code> prevents it choosing a departure before the first run.</p>
+<p>The optional <code>at_time</code> lets the connections note look ahead to a possible arrival. Calling <code>next_departure(route)</code> uses the current clock; calling <code>next_departure(route, arrival)</code> asks what leaves after that arrival.</p>
+<ul><li>At 08:05, the first train is still 08:10.</li><li>At exactly 08:10, that train can still be boarded.</li><li>At 08:10 plus a fraction of a minute, the next train is 08:40.</li><li>At Zehlendorf Station at 09:04, use first = 517 and interval = 30: the next train leaves at 09:07, not 09:10.</li></ul>
+<p>Walking returns before the interval calculation because its interval is zero. Dividing by a walking interval would cause an error.</p>
+<h3>D. Select a destination and create the buttons</h3>
+<p><code>select_stop(index)</code> first checks that the player is READY, unpaused and not reading instructions. It saves the selected destination, updates Map's selected ring, rebuilds the button list and refreshes the display. Clicking the stop where you already stand clears the destination filter.</p>
+<p><code>rebuild_options()</code> removes the old buttons. It then loops through the routes and keeps only routes whose <code>from</code> equals <code>current_stop</code>. If a destination has been selected, it also keeps only routes whose <code>to</code> matches that destination.</p>
+<p>For each remaining route, it creates one Button, stores the route index as metadata, and connects it like this:</p>
+<pre><code>button.set_meta("route_index", i)
+button.pressed.connect(choose_route.bind(i))
+options.add_child(button)</code></pre>
+<p>The visible text is refreshed separately. It includes the transport type, destination, departure, arrival and cost. Buttons that cost more than the remaining wallet are disabled. The layout matches the original two-line journey buttons: minimum size (304, 60), font 14, left aligned, inside Scroll/Options. The simpler controller still offers one leg at a time.</p>
+<p>Options also contains a Label named Connections, and sometimes a message when no journey is available. When refreshing buttons, first skip any child that is not a Button. Otherwise reading route metadata from a Label will fail. <code>connection_note(stop, at_time)</code> uses the same timetable helper to show onward departures and nearby walking transfers.</p>
+<p><strong>Checkpoint:</strong> at Potsdam, show all journeys. There should be a horse to Glienicker Bridge and a walk to Potsdam Station. Clicking a faraway stop should not teleport the player or invent a direct route.</p>
+<h3>E. Reserve the route, then pay when boarding</h3>
+<p><code>choose_route(index)</code> checks the current state, origin and budget again. Those checks matter even if the button already looks disabled, because the function is responsible for protecting the game rules.</p>
+<pre><code>route_index = index
+departure = next_departure(route)
+arrival = departure + route.duration
+first_step = false
+state = State.WAITING
+if departure &lt;= clock:
+    board()</code></pre>
+<p>Calculate the departure when the player clicks, rather than using a value the button displayed several seconds ago. After that, departure and arrival remain fixed for this trip.</p>
+<pre><code>func board() -&gt; void:
+    wallet -= int(routes[route_index].cost)
+    state = State.TRAVELLING</code></pre>
+<p>This is the only place money is taken. A walk costs zero and boards immediately. If the player cancels before a scheduled departure, there has been no charge to refund.</p>
+<h3>F. Advance the clock without skipping an event</h3>
+<pre><code>var rate = 0.12 if state == State.READY else 4.0
+var next_time = clock + delta * rate</code></pre>
+<p>While deciding, one game minute takes about 8.3 real seconds. Once waiting or travelling, four game minutes pass each real second. Use <code>minf(next_time, departure)</code> when waiting and <code>minf(next_time, arrival)</code> when travelling. This stops the clock exactly at the next event before calling <code>board()</code> or <code>arrive()</code>.</p>
+<p>This small practice version discards the unused fraction of a frame at an event boundary. It is easier to understand than the existing prototype's full event loop, and the timetable still reaches the exact scheduled event time. It is not intended to simulate hours of transport in one frame.</p>
+<h3>G. Use the clock to move the passenger</h3>
+<pre><code>map.progress = clampf((clock - departure) / (arrival - departure), 0.0, 1.0)
+map.player_pos = map.position_on_route(route_index, map.progress)</code></pre>
+<p>Suppose a leg leaves at 08:10 and arrives at 08:34. At 08:22, 12 of its 24 minutes have passed, so progress is 0.5. Map finds the position halfway along the path. On a horse or train leg, the same value controls a gold route highlight with alpha <code>progress * 0.7</code>, matching the original prototype. Walking uses the ring and a small dark dot instead.</p>
+<p>Do not add a separate timer or Tween that moves for a fixed number of real seconds. It would need extra work to stay synchronised when the player pauses or reads Help. Here, stopping the clock automatically stops the passenger's movement.</p>
+<h3>H. Arrive and show the next choices</h3>
+<p><code>arrive()</code> sets <code>current_stop</code> to the route's destination, clears the active route and selection, then checks whether this stop is the goal. If it is not the goal, the state returns to READY and the available buttons are rebuilt.</p>
+<p>If the stop is 4, compare clock with 570. At or before 570 is on time. Later is a completed journey that missed the deadline. Reaching station 7 is not a win, because the destination is the city gate.</p>
+<p>The player must choose again at intermediate stops. At Zehlendorf Station, for example, they can take the next train or walk to the road stop. Because the clock runs slowly while choosing, they need to respond before the next departure.</p>
+<h3>I. Keep the display separate from the decisions</h3>
+<p><code>update_display()</code> updates text, enabled controls, map variables and the moving gold ring. It does not charge a fare or decide that the player has arrived. Those changes belong to <code>board()</code> and <code>arrive()</code>.</p>
+<p>The game calls this display function every frame. It updates existing button text, rather than deleting and recreating the buttons every frame. Constant rebuilding would make clicks unreliable and create unnecessary work.</p>
+<h3>J. Finish pause, help, restart and keyboard controls</h3>
+<pre><code>func toggle_pause() -&gt; void:
+    if not instructions.visible and state != State.FINISHED:
+        paused = not paused
+        update_display()</code></pre>
+<p>Use the complete <code>restart()</code> in the appendix: it resets the wallet, time, selections, marker movement and first-step hint, then rebuilds the choices. Restart returns directly to the map, as in your original prototype. The introduction appears when the project is first opened; How to play opens it again.</p>
+<p>Help shows the instruction overlay; closing it hides the overlay. It does not change the <code>paused</code> variable, so a game that was already paused stays paused. The keyboard function handles a new press of Space or R. Enter activates the focused Start journey or Back to game button; there is no H shortcut in the original interface.</p>
+</section><section id="day1-checkpoint"><h2>Last 35 minutes: prove the core works, then save</h2>
+<ol><li>Leave the instruction screen open. The clock must remain at 08:00. Start the journey.</li><li>Choose the free walk to Potsdam Station. The ring should follow the dashed connection and arrive after five game minutes; the wallet stays at ten.</li><li>Choose the 08:10 train, then the onward 08:37 train at Zehlendorf Station, then the final walk. With prompt choices, reach Potsdamer Tor around 08:58 with one token remaining.</li><li>Check that the railway station in Berlin is not the goal. The final walk must still be necessary.</li><li>Pause during movement, resume, open/close How to play, and restart. Restart returns to 08:00, ten tokens and the first-step hint on the visible map.</li><li>Use Save All. If allowed by your centre's file arrangements, keep a checkpoint copy in the approved exam storage. Do not move it to a personal cloud account or take it home.</li><li>Before leaving, record a short next-task note in whatever development-note format your centre permits. Keep it with the secure work, not as a change to your locked supporting studies.</li></ol>
+<pre><code>Day 1 checkpoint
+Main scene: main.tscn
+Working: [write only what you actually tested]
+Known issue: [error/unfinished item, if any]
+Day 2 first task: add Map/Passenger and its train/horse frames
+Do not change: stop indices, timetable offsets, node names</code></pre>
+<p>If the core is unfinished, write the actual problem and resume with it inside Day 2. Do not plan to repair the exam project overnight.</p></section><section id="code-route_data"><h2>Day 1 code: route_data.gd</h2><p>Write this in <code>res://scripts/route_data.gd</code>. <a href="project/scripts/route_data.gd">Plain reference file</a>.</p><pre class="full-code"><code>extends RefCounted
+## Practice data. Timetable minutes and fares are invented gameplay values.
+## Map coordinates are local to an 860 x 550 area.
+const STOPS: Array[Dictionary] = [
+	{&quot;name&quot;: &quot;Potsdam&quot;, &quot;label&quot;: &quot;Potsdam&quot;, &quot;pos&quot;: Vector2(70, 410), &quot;rail&quot;: false, &quot;label_offset&quot;: Vector2(-48, -58)},
+	{&quot;name&quot;: &quot;Glienicker Bridge&quot;, &quot;label&quot;: &quot;Glienicke&quot;, &quot;pos&quot;: Vector2(210, 370), &quot;rail&quot;: false, &quot;label_offset&quot;: Vector2(-25, 19)},
+	{&quot;name&quot;: &quot;Zehlendorf&quot;, &quot;label&quot;: &quot;Zehlendorf&quot;, &quot;pos&quot;: Vector2(535, 315), &quot;rail&quot;: false, &quot;label_offset&quot;: Vector2(-44, -58)},
+	{&quot;name&quot;: &quot;Steglitz&quot;, &quot;label&quot;: &quot;Steglitz&quot;, &quot;pos&quot;: Vector2(665, 260), &quot;rail&quot;: false, &quot;label_offset&quot;: Vector2(-24, 18)},
+	{&quot;name&quot;: &quot;Potsdamer Tor&quot;, &quot;label&quot;: &quot;Potsdamer Tor&quot;, &quot;pos&quot;: Vector2(795, 130), &quot;rail&quot;: false, &quot;label_offset&quot;: Vector2(-151, -45)},
+	{&quot;name&quot;: &quot;Potsdam Station&quot;, &quot;label&quot;: &quot;Potsdam station&quot;, &quot;pos&quot;: Vector2(95, 460), &quot;rail&quot;: true, &quot;label_offset&quot;: Vector2(17, 1)},
+	{&quot;name&quot;: &quot;Zehlendorf Station&quot;, &quot;label&quot;: &quot;Zehlendorf station&quot;, &quot;pos&quot;: Vector2(550, 380), &quot;rail&quot;: true, &quot;label_offset&quot;: Vector2(-15, 22)},
+	{&quot;name&quot;: &quot;Potsdamer Bahnhof&quot;, &quot;label&quot;: &quot;Potsdamer Bahnhof&quot;, &quot;pos&quot;: Vector2(815, 195), &quot;rail&quot;: true, &quot;label_offset&quot;: Vector2(-164, 5)},
+]
+
+
+static func make_routes() -&gt; Array[Dictionary]:
+	var routes: Array[Dictionary] = [
+		leg(0, 1, &quot;horse&quot;, 486, 20, 10, 1, PackedVector2Array([Vector2(125, 412), Vector2(165, 393)])),
+		leg(1, 2, &quot;horse&quot;, 498, 20, 22, 2, PackedVector2Array([Vector2(285, 356), Vector2(365, 362), Vector2(440, 347), Vector2(480, 326)])),
+		leg(2, 3, &quot;horse&quot;, 522, 20, 18, 1, PackedVector2Array([Vector2(595, 305), Vector2(630, 286)])),
+		leg(3, 4, &quot;horse&quot;, 542, 20, 22, 2, PackedVector2Array([Vector2(718, 237), Vector2(752, 209), Vector2(777, 180)])),
+		leg(5, 6, &quot;train&quot;, 490, 30, 24, 5, PackedVector2Array([Vector2(180, 446), Vector2(260, 423), Vector2(340, 431), Vector2(420, 419), Vector2(480, 407), Vector2(520, 394)])),
+		leg(6, 7, &quot;train&quot;, 517, 30, 16, 4, PackedVector2Array([Vector2(610, 351), Vector2(690, 306), Vector2(757, 268), Vector2(785, 226)])),
+	]
+	# A walk has no timetable. The main script makes its departure &quot;now&quot;.
+	for pair in [[0, 5, 5], [2, 6, 4], [7, 4, 5]]:
+		routes.append(leg(pair[0], pair[1], &quot;walk&quot;, 0, 0, pair[2], 0))
+		routes.append(leg(pair[1], pair[0], &quot;walk&quot;, 0, 0, pair[2], 0))
+	return routes
+
+
+static func leg(from: int, to: int, mode: String, first: float, interval: float,
+		duration: float, cost: int, bends: PackedVector2Array = PackedVector2Array()) -&gt; Dictionary:
+	var points := PackedVector2Array([STOPS[from].pos])
+	points.append_array(bends)
+	points.append(STOPS[to].pos)
+	return {
+		&quot;from&quot;: from, &quot;to&quot;: to, &quot;mode&quot;: mode, &quot;first&quot;: first,
+		&quot;interval&quot;: interval, &quot;duration&quot;: duration, &quot;cost&quot;: cost, &quot;points&quot;: points,
+	}
+</code></pre></section><section id="code-map_view"><h2>Day 1 code: map_view.gd</h2><p>Write this in <code>res://scripts/map_view.gd</code>. <a href="project/scripts/map_view.gd">Plain reference file</a>.</p><pre class="full-code"><code>extends Node2D
+## Drawing and clicking only. The main script owns time and the passenger sprite.
+signal stop_clicked(index: int)
+const Data = preload(&quot;res://scripts/route_data.gd&quot;)
+const ROAD := Color(&quot;d84535&quot;)
+const RAIL := Color(&quot;233a42&quot;)
+const GOLD := Color(&quot;f1b62c&quot;)
+const TEAL := Color(&quot;24757a&quot;)
+var routes: Array[Dictionary] = Data.make_routes()
+var curves: Array[Curve2D] = []
+var input_enabled: bool = true
+var player_pos: Vector2 = Data.STOPS[0].pos
+var active_route: int = -1
+var progress: float = 0.0
+var selected: int = -1
+
+
+func _ready() -&gt; void:
+	for route in routes:
+		var curve := Curve2D.new()
+		curve.bake_interval = 5.0
+		for point in route.points:
+			curve.add_point(point)
+		curves.append(curve)
+	for stop in Data.STOPS:
+		add_label(stop.label, stop.pos + stop.label_offset, 16, Color(&quot;253b43&quot;), true)
+	add_label(&quot;BERLIN&quot;, Vector2(739, 25), 22, RAIL)
+	add_label(&quot;Sacrower\nSee&quot;, Vector2(246, 86), 13, Color(&quot;34809b&quot;))
+	add_label(&quot;Havel&quot;, Vector2(473, 213), 16, Color.WHITE)
+	add_label(&quot;SCHEMATIC MAP  /  late 1838&quot;, Vector2(14, 12), 13, Color(&quot;627777&quot;))
+	add_label(&quot;Road stops&quot;, Vector2(36, 515), 14, ROAD)
+	add_label(&quot;Railway stations&quot;, Vector2(187, 515), 14, RAIL)
+	add_label(&quot;- -  Walk&quot;, Vector2(354, 515), 14, RAIL)
+	add_label(&quot;Gold ring = you&quot;, Vector2(490, 515), 14, Color(&quot;916208&quot;))
+
+
+func add_label(text: String, at: Vector2, font_size: int, color: Color, outline: bool = false) -&gt; void:
+	var label := Label.new()
+	label.text = text
+	label.position = at
+	label.add_theme_font_size_override(&quot;font_size&quot;, font_size)
+	label.add_theme_color_override(&quot;font_color&quot;, color)
+	if outline:
+		label.add_theme_color_override(&quot;font_outline_color&quot;, Color.WHITE)
+		label.add_theme_constant_override(&quot;outline_size&quot;, 5)
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(label)
+
+
+func position_on_route(index: int, fraction: float) -&gt; Vector2:
+	var curve: Curve2D = curves[index]
+	return curve.sample_baked(curve.get_baked_length() * clampf(fraction, 0.0, 1.0))
+
+
+func _draw() -&gt; void:
+	for route in routes:
+		if route.mode == &quot;walk&quot;:
+			if route.from &lt; route.to: # Each walking link is drawn once.
+				_draw_walk(route.points[0], route.points[-1])
+		else:
+			draw_polyline(route.points, Color.WHITE, 10, true)
+			draw_polyline(route.points, ROAD if route.mode == &quot;horse&quot; else RAIL, 4, true)
+	if active_route &gt;= 0 and routes[active_route].mode != &quot;walk&quot;:
+		draw_polyline(routes[active_route].points, Color(GOLD, clampf(progress, 0.0, 1.0) * 0.7), 8, true)
+	for index in range(Data.STOPS.size()):
+		var stop: Dictionary = Data.STOPS[index]
+		var at: Vector2 = stop.pos
+		if stop.rail:
+			var box := Rect2(at - Vector2(11, 11), Vector2(22, 22))
+			draw_rect(box, Color.WHITE)
+			draw_rect(box, RAIL, false, 3)
+		else:
+			draw_circle(at, 11, Color.WHITE)
+			draw_circle(at, 11, ROAD, false, 3, true)
+		if index == selected:
+			if stop.rail:
+				draw_rect(Rect2(at - Vector2(18, 18), Vector2(36, 36)), TEAL, false, 3)
+			else:
+				draw_circle(at, 18, TEAL, false, 3, true)
+	draw_circle(player_pos, 21, Color(1, 0.78, 0.2, 0.24), true, -1, true)
+	draw_circle(player_pos, 20, GOLD, false, 3, true)
+	if active_route &gt;= 0 and routes[active_route].mode == &quot;walk&quot;:
+		draw_circle(player_pos, 6, RAIL, true, -1, true)
+
+
+func _draw_walk(a: Vector2, b: Vector2) -&gt; void:
+	var length: float = a.distance_to(b)
+	for segment in range(0, ceili(length), 13):
+		var start: Vector2 = a.lerp(b, float(segment) / length)
+		var end: Vector2 = a.lerp(b, minf(segment + 7, length) / length)
+		draw_line(start, end, RAIL, 3, true)
+
+
+func _unhandled_input(event: InputEvent) -&gt; void:
+	if not input_enabled:
+		return
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		var mouse: Vector2 = get_global_transform_with_canvas().affine_inverse() * event.position
+		for index in range(Data.STOPS.size()):
+			if mouse.distance_to(Data.STOPS[index].pos) &lt;= 22:
+				selected = index
+				queue_redraw()
+				stop_clicked.emit(index)
+				get_viewport().set_input_as_handled()
+				return
+</code></pre></section><section id="code-main_day1"><h2>Day 1 code: complete controller</h2><p>Write this in <code>res://scripts/main.gd</code>. <a href="project/scripts/main_day1.gd">Plain reference file</a>.</p><pre class="full-code"><code>extends Node2D
+const Data = preload(&quot;res://scripts/route_data.gd&quot;)
+enum State { READY, WAITING, TRAVELLING, FINISHED }
+const START_TIME = 480.0
+const DEADLINE = 570.0
+const GOAL = 4
+
+var state = State.READY
+var clock = START_TIME
+var wallet = 10
+var current_stop = 0
+var selected_stop = -1
+var route_index = -1
+var departure = 0.0
+var arrival = 0.0
+var paused = false
+var first_step = true
+var has_started = false
+var result_text = &quot;&quot;
+var last_arrival = &quot;08:00  Journey begins at Potsdam. Reach Potsdamer Tor by 09:30.&quot;
+var routes: Array[Dictionary] = Data.make_routes()
+
+@onready var map = $Map
+@onready var clock_label: Label = $UI/Interface/Clock
+@onready var wallet_label: Label = $UI/Interface/Wallet
+@onready var mode_label: Label = $UI/Interface/Mode
+@onready var location_label: Label = $UI/Interface/Location
+@onready var detail_label: Label = $UI/Interface/Detail
+@onready var status_label: Label = $UI/Interface/Status
+@onready var footer_label: Label = $UI/Interface/Footer
+@onready var options: VBoxContainer = $UI/Interface/Scroll/Options
+@onready var progress_bar: ProgressBar = $UI/Interface/Progress
+@onready var pause_button: Button = $UI/Interface/Pause
+@onready var cancel_button: Button = $UI/Interface/CancelWait
+@onready var show_all_button: Button = $UI/Interface/ShowAll
+@onready var instructions: Control = $UI/Interface/Instructions
+@onready var start_button: Button = $UI/Interface/Instructions/Center/Panel/Content/Bottom/Start
+
+func _ready() -&gt; void:
+	map.stop_clicked.connect(select_stop)
+	$UI/Interface/Restart.pressed.connect(restart)
+	$UI/Interface/Help.pressed.connect(open_help)
+	show_all_button.pressed.connect(select_stop.bind(-1))
+	pause_button.pressed.connect(toggle_pause)
+	cancel_button.pressed.connect(cancel_wait)
+	start_button.pressed.connect(close_help)
+	rebuild_options()
+	open_help()
+
+func time_text(minutes: float) -&gt; String:
+	var whole = floori(minutes + 0.000001)
+	return &quot;%02d:%02d&quot; % [whole / 60, whole % 60]
+
+func next_departure(route: Dictionary, at_time: float = -1.0) -&gt; float:
+	var now = clock if at_time &lt; 0.0 else at_time
+	if route.mode == &quot;walk&quot;:
+		return now
+	var runs = maxi(0, ceili((now - route.first) / route.interval))
+	return route.first + runs * route.interval
+
+func select_stop(index: int) -&gt; void:
+	if state != State.READY or paused or instructions.visible:
+		return
+	selected_stop = -1 if index == current_stop else index
+	map.selected = selected_stop
+	rebuild_options()
+	update_display()
+
+func rebuild_options() -&gt; void:
+	for child in options.get_children():
+		options.remove_child(child)
+		child.queue_free()
+	for i in range(routes.size()):
+		var route: Dictionary = routes[i]
+		if state != State.READY or route.from != current_stop:
+			continue
+		if selected_stop != -1 and route.to != selected_stop:
+			continue
+		var button = Button.new()
+		button.custom_minimum_size = Vector2(304, 60)
+		button.focus_mode = Control.FOCUS_NONE
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		button.add_theme_font_size_override(&quot;font_size&quot;, 14)
+		button.set_meta(&quot;route_index&quot;, i)
+		button.pressed.connect(choose_route.bind(i))
+		options.add_child(button)
+	if options.get_child_count() == 0:
+		var note = Label.new()
+		note.custom_minimum_size.x = 296
+		note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		note.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		note.text = &quot;Your journey is in progress. Choose again after arrival.&quot;
+		if state == State.READY:
+			note.text = &quot;No direct journey from here. Try another stop, or walk to the nearby station.&quot;
+		elif state == State.FINISHED:
+			note.text = &quot;A train reaches Potsdamer Bahnhof. The horse goes straight to the gate. That last walk can make a difference.&quot;
+		options.add_child(note)
+	var connections = Label.new()
+	connections.name = &quot;Connections&quot;
+	connections.custom_minimum_size.x = 296
+	connections.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	connections.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	connections.add_theme_font_size_override(&quot;font_size&quot;, 15)
+	connections.add_theme_color_override(&quot;font_color&quot;, Color(&quot;24757a&quot;))
+	options.add_child(connections)
+
+func choose_route(index: int) -&gt; void:
+	if state != State.READY or paused or instructions.visible:
+		return
+	var route: Dictionary = routes[index]
+	if route.from != current_stop or route.cost &gt; wallet:
+		return
+	route_index = index
+	departure = next_departure(route)
+	arrival = departure + route.duration
+	first_step = false
+	state = State.WAITING
+	if departure &lt;= clock:
+		board()
+	rebuild_options()
+	update_display()
+
+func board() -&gt; void:
+	wallet -= int(routes[route_index].cost)
+	state = State.TRAVELLING
+
+func cancel_wait() -&gt; void:
+	if state != State.WAITING or paused or instructions.visible:
+		return
+	state = State.READY
+	route_index = -1
+	selected_stop = -1
+	map.selected = -1
+	rebuild_options()
+	update_display()
+
+func tick_clock(delta: float) -&gt; void:
+	var rate = 0.12 if state == State.READY else 4.0
+	var next_time = clock + delta * rate
+	if state == State.WAITING:
+		clock = minf(next_time, departure)
+		if clock &gt;= departure:
+			board()
+	elif state == State.TRAVELLING:
+		clock = minf(next_time, arrival)
+		if clock &gt;= arrival:
+			arrive()
+	else:
+		clock = next_time
+
+func arrive() -&gt; void:
+	current_stop = int(routes[route_index].to)
+	last_arrival = &quot;%s  Arrived at %s.&quot; % [time_text(clock), Data.STOPS[current_stop].name]
+	route_index = -1
+	selected_stop = -1
+	map.selected = -1
+	if current_stop == GOAL:
+		state = State.FINISHED
+		result_text = &quot;You made it!&quot; if clock &lt;= DEADLINE else &quot;Arrived, but too late&quot;
+	else:
+		state = State.READY
+	rebuild_options()
+
+func _process(delta: float) -&gt; void:
+	if not paused and not instructions.visible and state != State.FINISHED:
+		tick_clock(delta)
+	update_display()
+
+func update_display() -&gt; void:
+	var blocked = paused or instructions.visible or state == State.FINISHED
+	map.input_enabled = not blocked and state == State.READY
+	clock_label.text = time_text(clock)
+	wallet_label.text = &quot;%d %s&quot; % [wallet, &quot;token&quot; if wallet == 1 else &quot;tokens&quot;]
+	mode_label.text = &quot;Paused&quot; if paused else (&quot;Time is passing&quot; if state == State.READY else &quot;Clock accelerated&quot;)
+	if state == State.FINISHED:
+		mode_label.text = &quot;Journey complete&quot;
+	if instructions.visible:
+		mode_label.text = &quot;Reading instructions&quot;
+	location_label.text = Data.STOPS[current_stop].name
+	detail_label.text = &quot;Choose below, or click a map stop.&quot;
+	pause_button.text = &quot;Resume&quot; if paused or instructions.visible else &quot;Pause&quot;
+	pause_button.disabled = instructions.visible or state == State.FINISHED
+	$UI/Interface/Restart.disabled = instructions.visible
+	$UI/Interface/Help.disabled = instructions.visible
+	show_all_button.visible = selected_stop != -1 and state == State.READY
+	show_all_button.disabled = blocked
+	cancel_button.visible = state == State.WAITING
+	cancel_button.disabled = blocked
+	status_label.text = &quot;Gold ring = you. Walk to a square station to catch a train.&quot;
+	if first_step and state == State.READY:
+		status_label.text = &quot;First step: click Potsdam Station, the square near your gold ring.&quot;
+		if selected_stop == 5:
+			status_label.text = &quot;Now choose &#x27;Walk &gt; Potsdam Station&#x27; in the panel on the right.&quot;
+	if selected_stop != -1:
+		detail_label.text = &quot;To %s&quot; % Data.STOPS[selected_stop].name
+	if state == State.WAITING:
+		location_label.text = &quot;Waiting for &quot; + routes[route_index].mode
+		detail_label.text = &quot;Departs %s. You can cancel while waiting.&quot; % time_text(departure)
+		status_label.text = &quot;Waiting %.1f minutes for the %s.&quot; % [maxf(0, departure - clock), routes[route_index].mode]
+	elif state == State.TRAVELLING:
+		var mode: String = routes[route_index].mode
+		location_label.text = &quot;Walking to the stop&quot; if mode == &quot;walk&quot; else &quot;On the &quot; + mode
+		detail_label.text = &quot;To %s\nArrives %s&quot; % [Data.STOPS[routes[route_index].to].name, time_text(arrival)]
+		status_label.text = &quot;Travelling to %s. %.1f minutes to go.&quot; % [Data.STOPS[routes[route_index].to].name, maxf(0, arrival - clock)]
+	elif state == State.FINISHED:
+		location_label.text = result_text
+		detail_label.text = &quot;Berlin at %s. You spent %d tokens.\nTry another route with Restart.&quot; % [time_text(clock), 10 - wallet]
+		status_label.text = &quot;Finished with %d tokens left. Could a different connection work?&quot; % wallet
+	footer_label.text = &quot;Timetable and fares are game values. Horse every 20 min; train every 30 min.\nSpace pauses. R restarts. Walking between the road and railway takes time.&quot;
+	if not last_arrival.is_empty():
+		footer_label.text = last_arrival + &quot;\nTimetable and fares are game values. Space pauses. R restarts.&quot;
+	progress_bar.visible = state in [State.WAITING, State.TRAVELLING]
+	progress_bar.value = 100.0 * clampf((clock - departure) / (arrival - departure), 0.0, 1.0) if state == State.TRAVELLING else 0.0
+	var inspect_stop = selected_stop
+	var inspect_time = INF
+	for button in options.get_children():
+		if not button is Button:
+			continue
+		var route: Dictionary = routes[int(button.get_meta(&quot;route_index&quot;))]
+		var leaves = next_departure(route)
+		button.text = &quot;%s &gt; %s\n%s %s   Arr %s   %d %s&quot; % [route.mode.capitalize(), Data.STOPS[route.to].name, &quot;Go&quot; if route.mode == &quot;walk&quot; else &quot;Dep&quot;, time_text(leaves), time_text(leaves + route.duration), int(route.cost), &quot;token&quot; if route.cost == 1 else &quot;tokens&quot;]
+		if route.cost &gt; wallet:
+			button.text += &quot; (too expensive)&quot;
+		button.disabled = blocked or route.cost &gt; wallet
+		inspect_time = minf(inspect_time, leaves + route.duration)
+	if state in [State.WAITING, State.TRAVELLING]:
+		inspect_stop = int(routes[route_index].to)
+		inspect_time = arrival
+	var connections: Label = options.get_node(&quot;Connections&quot;)
+	connections.text = connection_note(inspect_stop, clock if is_inf(inspect_time) else inspect_time) if inspect_stop &gt;= 0 else &quot;&quot;
+	connections.visible = not connections.text.is_empty()
+	map.active_route = -1
+	map.progress = 0.0
+	map.player_pos = Data.STOPS[current_stop].pos
+	if state == State.TRAVELLING:
+		map.active_route = route_index
+		map.progress = clampf((clock - departure) / (arrival - departure), 0.0, 1.0)
+		map.player_pos = map.position_on_route(route_index, map.progress)
+	map.queue_redraw()
+
+
+func toggle_pause() -&gt; void:
+	if not instructions.visible and state != State.FINISHED:
+		paused = not paused
+		update_display()
+
+func connection_note(stop: int, at_time: float) -&gt; String:
+	var lines: Array[String] = [&quot;\nCONNECTIONS FROM %s&quot; % time_text(at_time)]
+	for route in routes:
+		if route.from != stop:
+			continue
+		if route.mode != &quot;walk&quot;:
+			var leaves = next_departure(route, at_time)
+			lines.append(&quot;%s from here: %s, then %s.&quot; % [route.mode.capitalize(), time_text(leaves), time_text(leaves + route.interval)])
+		elif route.to == GOAL:
+			lines.append(&quot;Walk %d min to Potsdamer Tor. Earliest arrival: %s.&quot; % [int(route.duration), time_text(at_time + route.duration)])
+		else:
+			for onward in routes:
+				if onward.from == route.to and onward.mode != &quot;walk&quot;:
+					lines.append(&quot;Walk %d min to %s. Next %s: %s.&quot; % [int(route.duration), Data.STOPS[route.to].name, onward.mode, time_text(next_departure(onward, at_time + route.duration))])
+	return &quot;\n\n&quot;.join(lines) if lines.size() &gt; 1 else &quot;&quot;
+
+func open_help() -&gt; void:
+	start_button.text = &quot;Back to game&quot; if has_started else &quot;Start journey&quot;
+	instructions.show()
+	start_button.grab_focus()
+	update_display()
+
+func close_help() -&gt; void:
+	has_started = true
+	instructions.hide()
+	start_button.release_focus()
+	update_display()
+
+func restart() -&gt; void:
+	if instructions.visible:
+		return
+	state = State.READY
+	clock = START_TIME
+	wallet = 10
+	current_stop = 0
+	selected_stop = -1
+	route_index = -1
+	departure = 0.0
+	arrival = 0.0
+	paused = false
+	first_step = true
+	result_text = &quot;&quot;
+	last_arrival = &quot;08:00  Journey begins at Potsdam. Reach Potsdamer Tor by 09:30.&quot;
+	map.selected = -1
+	rebuild_options()
+	update_display()
+
+func _input(event: InputEvent) -&gt; void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if instructions.visible:
+			if event.keycode in [KEY_R, KEY_SPACE]:
+				get_viewport().set_input_as_handled()
+			return
+		match event.keycode:
+			KEY_SPACE: toggle_pause()
+			KEY_R: restart()
+			_: return
+		get_viewport().set_input_as_handled()
+</code></pre></section><section id="troubleshooting">
+<h2>If something breaks, check this before rewriting it</h2>
+<table><thead><tr><th>Problem</th><th>Likely cause and first check</th></tr></thead><tbody>
+<tr><td>“Node not found” or a null instance.</td><td>Compare the scene tree against the <code>@onready</code> path. Check capitals, spelling and parents.</td></tr>
+<tr><td>“Cannot infer the type” after reading dictionary data.</td><td>Use an explicit type, for example <code>var route: Dictionary = routes[index]</code> or <code>var at: Vector2 = stop.pos</code>.</td></tr>
+<tr><td>The project cannot load a script or sprite.</td><td>Check its exact <code>res://</code> path. Save the file, allow import to finish, and confirm its filename.</td></tr>
+<tr><td>The map is visible, but clicks do nothing.</td><td>Check Interface/decorative Mouse Filters, whether Instructions is visible, and <code>map.input_enabled</code>. The game must be READY.</td></tr>
+<tr><td>The click target is shifted away from a stop.</td><td>Convert <code>event.position</code> with <code>get_global_transform_with_canvas().affine_inverse()</code>, as in the map script; do not compare viewport coordinates with local stop coordinates.</td></tr>
+<tr><td>The clock moves while instructions are open.</td><td>Check the <code>_process()</code> guard and the correct Instructions node path.</td></tr>
+<tr><td>A train already gone can still be caught.</td><td>Recalculate next departure inside <code>choose_route()</code>, not only when the menu was first created.</td></tr>
+<tr><td>Every frame reduces the wallet.</td><td>Move payment into <code>board()</code>. Do not charge inside <code>update_display()</code> or each travel frame.</td></tr>
+<tr><td>The passenger cuts across corners.</td><td>Use <code>position_on_route()</code>. Do not lerp directly from the origin stop to destination once routes contain bends.</td></tr>
+<tr><td>The passenger moves, but the gold ring does not.</td><td>Both should use <code>map.player_pos</code>. Call <code>map.queue_redraw()</code> after setting it.</td></tr>
+
+
+
+<tr><td>Journey buttons jump or clicks are missed.</td><td>Do not rebuild them in every <code>_process()</code> call. Rebuild on selection/state changes and update their text separately.</td></tr>
+<tr><td>There is no next-leg button after arrival.</td><td>Check <code>current_stop</code>, set state back to READY, clear the old selection and call <code>rebuild_options()</code>.</td></tr>
+<tr><td>The game reports a win at Potsdamer Bahnhof.</td><td>GOAL must be stop 4, Potsdamer Tor, not stop 7.</td></tr>
+
+<tr><td>Text is clipped or overlaps a button.</td><td>Check the node's size, font size and wrapping. Container children need appropriate minimum size.</td></tr>
+</tbody></table>
+<h3>The short version to rehearse without looking</h3>
+<p><strong>Data:</strong> names, coordinates, route times and costs. <strong>Draw:</strong> lines, symbols and labels. <strong>Select:</strong> filter journeys from the current stop. <strong>Schedule:</strong> find the next departure. <strong>Wait:</strong> advance to that time. <strong>Pay:</strong> charge once. <strong>Move:</strong> use clock progress along the route. <strong>Arrive:</strong> update the stop and either choose again or show the result.</p>
+<p>If you can explain each of those actions and point to the function that performs it, you are in a much better position to rebuild and debug the game than if you only recognise the finished code.</p>
+</section><section id="documentation"><h2>Documentation used for the code</h2>
+<ul><li><a href="https://docs.godotengine.org/en/4.4/tutorials/2d/custom_drawing_in_2d.html">Godot 4.4 custom drawing: _draw and queue_redraw</a></li>
+<li><a href="https://docs.godotengine.org/en/4.4/classes/class_curve2d.html">Godot 4.4 Curve2D: path length and sample_baked</a></li>
+<li><a href="https://docs.godotengine.org/en/4.4/tutorials/2d/2d_sprite_animation.html">Godot 4.4 2D sprite animation</a></li>
+<li><a href="https://docs.godotengine.org/en/4.4/classes/class_control.html">Godot 4.4 Control: layout, focus and mouse filtering</a></li>
+<li><a href="https://docs.godotengine.org/en/4.4/tutorials/ui/gui_containers.html">Godot 4.4 containers: automatic child layout and size flags</a></li></ul>
+<p>The interface geometry, map label offsets, colours, instructions layout and timetable values come from your original prototype. The sprite sheet is unchanged. The teaching controller is still simpler: it chooses one leg at a time and shows the selected vehicle during travel, without the original's background services or through-journey reservations.</p></section></main><button class="print" onclick="window.print()">Print or save as PDF</button></body></html>
